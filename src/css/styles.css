@@ -1,0 +1,27 @@
+.cms-container {
+    height: calc(100vh - 56px);
+}
+
+.cms-list-blogs {
+    min-width: 240px;
+    height: calc(100vh - 56px);
+    ul {
+        padding: 0px;
+        li {
+            padding: 4px 2px;
+        }
+        li:hover {
+            background-color: rgb(244, 244, 244);
+            cursor: pointer
+        }
+    };
+    p {
+        font-size: .8rem !important;
+    }
+}
+
+.cms-list-blogs__img img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+}
