@@ -25,3 +25,11 @@
     height: 55px;
     object-fit: cover;
 }
+
+
+
+
+#quill-box {
+    height: calc( 100vh - 198px);
+    width: 100%;
+}
