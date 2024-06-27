@@ -1,29 +1,19 @@
 import { useEffect, useState } from 'react';
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore/lite";
 import { db } from '../../services/firebase';
 
 export const SidebarBlogs = () => {
 
 
-    const saveUser = async () => {
-        try {
-            const docRef = await addDoc(collection(db, "users"), {
-              first: "Ada",
-              last: "Lovelace",
-              born: 1815
-            });
-            console.log("Document written with ID: ", docRef.id);
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-    }
-
 
     const traer = async () => {
-        const docRef = doc(db, "users", "HtPVXHPKspvrAaXkVdw8");
+        const docRef = doc(db, "entity", "concejo-charata");
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
+        if(docSnap){
+            console.log(docSnap.data())
+        // const docSnap = await getDoc(docRef);
+        // if (docSnap.exists()) {
+        //     console.log("Document data:", docSnap.data());
         } else {
             // docSnap.data() will be undefined in this case
             console.log("No such document!");
@@ -34,7 +24,7 @@ export const SidebarBlogs = () => {
     }, [])
 
     const handleClick = () => {
-        saveUser()
+        // saveUser()
     }
     const handleTraer = () => {
         traer()
