@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore/lite";
+import { useEffect, useState, Suspense } from 'react';
+import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from '../../services/firebase';
+import { Spinner } from '../spinner/Spinner';
+import Swal from 'sweetalert2';
 
 export const SidebarBlogs = () => {
 
 
+    const [blogs, setBlogs] = useState([])
 
-    const traer = async () => {
+    const getBlogs = async () => {
         const docRef = doc(db, "entity", "concejo-charata");
         const docSnap = await getDoc(docRef);
+
         if(docSnap){
-            console.log(docSnap.data())
-        // const docSnap = await getDoc(docRef);
-        // if (docSnap.exists()) {
-        //     console.log("Document data:", docSnap.data());
+            console.log(docSnap.data());
+            setBlogs(docSnap.data()?.blogs)
         } else {
-            // docSnap.data() will be undefined in this case
-            console.log("No such document!");
+            Swal.fire('Sin Blogs', 'No hay blogs en esta página', 'warning')
         }
     }
 
+
     useEffect(() => {
-    }, [])
+        getBlogs()
+    },[])
 
     const handleClick = () => {
-        // saveUser()
-    }
-    const handleTraer = () => {
-        traer()
+        console.log('Seleccionar Blog')
     }
 
 
@@ -36,20 +36,26 @@ export const SidebarBlogs = () => {
             <h3 className="mt-2 p-3">Blogs</h3>
             <hr />
             <ul className="">
-
+                <Suspense fallback={<Spinner />}>
                 {/* List-Item */}
-                <li className="list-group-item d-flex align-items-center gap-2 p-3" onClick={handleClick}>
-                    <div className="cms-list-blogs__img">
-                        <img src="/img/team-2.jpg" alt="" />
-                    </div>
-                    <div>
-                        <h6 className="m-0">Titulo</h6>
-                        <p className="text-muted ">Lorem ipsum dolor sit.</p>
-                    </div>
-                </li>
-
-
-                <button onClick={handleTraer}>traer datos</button>
+                {
+                    blogs.map( (blog:any, i) => 
+                        <li 
+                            className="list-group-item d-flex align-items-center gap-2 p-3" 
+                            onClick={() => handleClick()}
+                            key={i}
+                        >
+                            <div className="cms-list-blogs__img">
+                                <img src="/img/team-2.jpg" alt="" />
+                            </div>
+                            <div>
+                                <h6 className="m-0">{blog?.title}</h6>
+                                <p className="text-muted ">Lorem ipsum dolor sit.</p>
+                            </div>
+                        </li>
+                    )
+                }
+                </Suspense>
             </ul>
         </div>
     );

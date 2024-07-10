@@ -1,6 +1,5 @@
 import { Layout } from "./components/layout/Layout";
-import { Home } from "./components/views/Home";
-// import { ContextCMSProvider } from './context/Context';
+import { Home } from "./views/Home";
 
 export const App = () => {
 

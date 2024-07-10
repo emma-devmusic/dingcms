@@ -1,6 +1,6 @@
 
-import { useForm } from "../../hooks/useForm"
-import { auth, authCMS } from "../../services/auth"
+import { useForm } from "../hooks/useForm"
+import { auth, authCMS } from "../services/auth"
 import { useNavigate } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 import { useEffect } from "react"

@@ -1,9 +1,12 @@
 
-import { ContentEdit } from "../contentEdit/ContentEdit";
-import { SidebarBlogs } from "../sidebarBlog/SidebarBlogs";
+import { ContentEdit } from "../components/contentEdit/ContentEdit"
+import { SidebarBlogs } from "../components/sidebarBlog/SidebarBlogs"
 
-export const Home = () => {
-    
+
+export const BlogsEdit = () => {
+
+
+
     return (
         <div className="cms-container">
             <div className="d-flex">
@@ -11,5 +14,5 @@ export const Home = () => {
                 <ContentEdit />
             </div>
         </div>
-    );
-};
+    )
+}
