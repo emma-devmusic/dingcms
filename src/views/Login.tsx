@@ -4,11 +4,15 @@ import { auth, authCMS } from "../services/auth"
 import { useNavigate } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 import { useEffect } from "react"
+import { useAppDispatch } from "../redux/store"
+import { login } from "../redux/slice/authSlice"
 
 
 export const Login = () => {
 
     const navigate = useNavigate()
+
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -23,10 +27,12 @@ export const Login = () => {
         password: ''
     })
 
+
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        authCMS(values.email, values.password)
-        navigate('/')
+        dispatch(
+            login(values)
+        )
     }
 
     return (

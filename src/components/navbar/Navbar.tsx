@@ -35,7 +35,12 @@ export const Navbar = () => {
                             <Link className="nav-link" aria-current="page" to="/clinica-giuliani">Clinica Giuliani</Link>
                         </li> */}
                     </ul>
-                    <form className="d-flex">
+                    <form className="d-flex gap-3">
+                        <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll ">
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/profile">Perfil</Link>
+                            </li>
+                        </ul>
                         <button className="btn btn-outline-primary" onClick={handleLogout}>
                             Salir
                         </button>

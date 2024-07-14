@@ -15,9 +15,12 @@ export const authCMS = async (email: string, password: string) => {
 
     if (userCredential) {
         Swal.fire(`Ingresando`, `Autenticación Exitosa`, 'success')
+        console.log(userCredential)
         sessionStorage.setItem('accessToken', userCredential.user.accessToken )
     }
+
 }
+
 
 
 

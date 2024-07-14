@@ -3,6 +3,7 @@ import { App } from "./App";
 import { Login } from "./views/Login";
 import { SelectPages } from "./views/SelectPages";
 import { BlogsEdit } from "./views/BlogsEdit";
+import { Profile } from "./views/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -16,7 +17,11 @@ export const router = createBrowserRouter([
             {
                 path: '/pages/:id',
                 element: <BlogsEdit />
-            }
+            },
+            {
+                path: '/profile',
+                element: <Profile />
+            },
         ]
     },
     {
