@@ -1,31 +1,24 @@
-import { useEffect, useState } from 'react';
-import { db } from '../../services/firebase';
-import Swal from 'sweetalert2';
+import { useEffect, useMemo } from 'react';
 import { BlogListItem } from './BlogListItem';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { getBlogs } from '../../redux/slice/blogsSlice';
 
 
 
 
 const BlogList = () => {
 
-    const [blogs, setBlogs] = useState<any>([])
+    const params = useParams()
 
-    const getBlogs = async () => {
-        const docRef = collection(db, "entity", "concejo-charata", "blogs");
-        const docSnap = await getDocs(docRef);
-        if (docSnap) {
-            docSnap.forEach( e=> {
-                setBlogs((state:any)=> [...state, e.data()])
-            })
-        } else {
-            Swal.fire('Sin Blogs', 'No hay blogs en esta página', 'warning')
-        }
-    }
+    const dispatch = useAppDispatch()
+    const { blogs } = useAppSelector( state=> state.blogs )
+    const getAllBlogs = useMemo(() => dispatch( getBlogs(params.id as string)), [] )
 
     useEffect(() => {
-        getBlogs()
+        getAllBlogs
     }, [])
+
 
     
     return (

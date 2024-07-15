@@ -6,11 +6,10 @@ import { SidebarBlogs } from "../components/sidebarBlog/SidebarBlogs"
 export const BlogsEdit = () => {
 
 
-
     return (
         <div className="cms-container">
             <div className="d-flex">
-                <SidebarBlogs />
+                <SidebarBlogs/>
                 <ContentEdit />
             </div>
         </div>

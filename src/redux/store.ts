@@ -4,16 +4,22 @@ import blogsReducer from './slice/blogsSlice'
 import authReducer from './slice/authSlice'
 import { authMiddleware } from './middlewares/auth-middleware'
 import uiReducer from './slice/uiSlice'
+import { entityMiddleware } from './middlewares/entity-middleware'
+import entityReducer from './slice/entitySlice'
+import { blogMiddleware } from './middlewares/blog-middleware'
 
 const middlewares = [
-    authMiddleware
+    authMiddleware,
+    entityMiddleware,
+    blogMiddleware
 ] as Middleware[]
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         blogs: blogsReducer,
-        ui: uiReducer
+        ui: uiReducer,
+        entity: entityReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,

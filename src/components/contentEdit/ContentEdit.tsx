@@ -2,25 +2,37 @@
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
-
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { newBlog } from "../../redux/slice/blogsSlice";
+import { useParams } from "react-router-dom";
+import { NewBlog } from "../../types/store";
 
 export const ContentEdit = () => {
 
+    const { blogActive } = useAppSelector(state => state.blogs)
+    const params = useParams()
+    const dispatch = useAppDispatch()
     const { quill, quillRef } = useQuill();
 
     const [stateHtml, setStateHtml] = useState<string | undefined>()
 
     useEffect(() => {
         if (quill)
-            quill.clipboard.dangerouslyPasteHTML('<h1>React Hook for Quill!</h1>');
-    }, [quill]);
+            quill.clipboard.dangerouslyPasteHTML( blogActive.html ?? '');
+    }, [quill, blogActive]);
 
     const handleSave = () => {
         setStateHtml(quill?.root.innerHTML)
     }
 
-    const handleClick = () => {
-        console.log(stateHtml)
+    const handlePublish = () => {
+
+        const arg = {
+            entity: params.id,
+            blog: { title: 'Titulo', html: stateHtml}
+        }
+
+        dispatch( newBlog(arg as NewBlog) )
     }
 
     return (
@@ -30,7 +42,7 @@ export const ContentEdit = () => {
 
                 <div className="d-flex gap-2">
                     <button className="btn btn-outline-primary" onClick={handleSave}>Guardar</button>
-                    <button className="btn btn-primary" onClick={handleClick} disabled={!stateHtml}>Publicar</button>
+                    <button className="btn btn-primary" onClick={handlePublish} disabled={!stateHtml}>Publicar</button>
                 </div>
             </div>
 

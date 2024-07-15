@@ -4,7 +4,8 @@ import { app } from "./firebase";
 
 export const auth = getAuth(app);
 
-export const authCMS = async (email: string, password: string) => {
+export const authInDataBase = async (email: string, password: string) => {
+
 
     const userCredential: any = await signInWithEmailAndPassword(auth, email, password)
         .catch((error) => {
@@ -17,8 +18,9 @@ export const authCMS = async (email: string, password: string) => {
         Swal.fire(`Ingresando`, `Autenticación Exitosa`, 'success')
         console.log(userCredential)
         sessionStorage.setItem('accessToken', userCredential.user.accessToken )
+        return userCredential
     }
-
+    
 }
 
 

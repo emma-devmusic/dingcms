@@ -1,3 +1,6 @@
+import { setActiveBlog } from "../../redux/slice/blogsSlice";
+import { useAppDispatch } from "../../redux/store";
+
 interface Props {
     blog: any
 }
@@ -5,8 +8,11 @@ interface Props {
 
 export const BlogListItem = ({blog}: Props) => {
 
+
+    const dispatch = useAppDispatch()
+
     const handleClick = () => {
-        console.log(blog.id)
+        dispatch( setActiveBlog( blog ) )
     }
 
     return (
