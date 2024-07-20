@@ -12,6 +12,7 @@ export const Navbar = () => {
                 navigate('/login')
                 sessionStorage.clear()
             }).catch((error) => {
+                console.log(error)
                 Swal.fire('Error', 'Hubo un error para salir de la sesion', 'error');
             });
     }

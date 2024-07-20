@@ -1,6 +1,6 @@
 
-import { ContentEdit } from "../components/contentEdit/ContentEdit"
 import { SidebarBlogs } from "../components/sidebarBlog/SidebarBlogs"
+import { Carrousel } from "../components/slick/Carrousel"
 
 
 export const BlogsEdit = () => {
@@ -10,7 +10,7 @@ export const BlogsEdit = () => {
         <div className="cms-container">
             <div className="d-flex">
                 <SidebarBlogs/>
-                <ContentEdit />
+                <Carrousel />
             </div>
         </div>
     )

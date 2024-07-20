@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 import { Navbar } from "../navbar/Navbar";
 import { auth } from "../../services/auth";
 import { useNavigate } from "react-router-dom";

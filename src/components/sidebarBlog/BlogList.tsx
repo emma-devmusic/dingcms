@@ -25,7 +25,7 @@ const BlogList = () => {
         <ul className="">
             {
                 blogs.map((blog: any, i:number) =>
-                    <BlogListItem blog={blog} key={i} />
+                    <BlogListItem blog={blog.data} key={i} />
                 )
             }
         </ul>

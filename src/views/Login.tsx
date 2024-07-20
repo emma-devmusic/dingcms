@@ -1,6 +1,6 @@
 
 import { useForm } from "../hooks/useForm"
-import { auth, authCMS } from "../services/auth"
+import { auth } from "../services/auth"
 import { useNavigate } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 import { useEffect } from "react"
@@ -22,7 +22,7 @@ export const Login = () => {
         })
     }, [])
 
-    const [values, handleInputChange, reset] = useForm({
+    const [values, handleInputChange] = useForm({
         email: '',
         password: ''
     })

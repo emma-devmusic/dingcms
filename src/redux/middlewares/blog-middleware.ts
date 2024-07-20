@@ -1,8 +1,8 @@
 import { Dispatch, MiddlewareAPI, PayloadAction } from "@reduxjs/toolkit";
 import { setIsLoading } from "../slice/uiSlice";
 import Swal from "sweetalert2";
-import { getterBlogFromDB, setBlogInDB } from "../../services/blogs";
-import { setBlog, setBlogs } from "../slice/blogsSlice";
+import { deleteBlogInDB, getterBlogFromDB, setBlogInDB } from "../../services/blogs";
+import { setBlogs } from "../slice/blogsSlice";
 
 export const blogMiddleware = (state: MiddlewareAPI) => {
     return (next: Dispatch) => async (action: PayloadAction<any>) => {
@@ -35,5 +35,22 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
             state.dispatch(setIsLoading(false)) 
         }
 
+        
+        if(action.type === 'blogs/deleteBlog') {
+            state.dispatch( setIsLoading(true) )
+            try {
+                await deleteBlogInDB(action.payload.entity, action.payload.id)
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            } catch(err) {
+                Swal.fire('Error', 'Ocurrió un Error!', 'error');
+            }
+            state.dispatch(setIsLoading(false)) 
+
+        }
+        
     }
 }

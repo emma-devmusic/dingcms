@@ -4,7 +4,7 @@ import { EntityState, Entity } from '../../types/store';
 
 const initialState: EntityState = {
     entities: [],
-    entitySelected: {name: '', slug: ''}
+    entitySelected: { name: '', slug: '' }
 }
 
 
@@ -13,18 +13,22 @@ export const entitySlice = createSlice({
     initialState: initialState,
     reducers: {
         getEntities(state, action: PayloadAction) {
-            //middleware
+            console.log(state, action)
         },
         setEntities(state, action: PayloadAction<Entity[]>) {
             state.entities = action.payload
         },
+        setSelectedEntity(state, action: PayloadAction<{ name: string, slug: string }>) {
+            state.entitySelected = action.payload
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
 export const {
     getEntities,
-    setEntities
+    setEntities,
+    setSelectedEntity
 } = entitySlice.actions
 
 

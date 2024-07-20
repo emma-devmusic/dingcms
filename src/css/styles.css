@@ -30,6 +30,42 @@
 
 
 #quill-box {
-    height: calc( 100vh - 198px);
+    /* color: rgb(177, 177, 177); */
+    height: calc( 100vh - 250px);
     width: 100%;
+}
+
+
+
+.react-dropzone {
+    transition: all .3s ease;
+    &:hover {
+        border-color: rgb(151, 151, 252) !important;
+        cursor: pointer;
+        transition: all .3s ease;
+    }
+}
+
+
+
+.list-blog-details {
+    max-height: 60px;
+    max-width: 250px;
+    overflow: hidden;
+    p {
+        max-height: 60px;
+        text-overflow: ellipsis;
+    }
+}
+
+
+
+
+
+
+#img-item-blog {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50px;
 }

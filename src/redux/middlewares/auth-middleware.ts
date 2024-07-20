@@ -1,5 +1,5 @@
 import { Dispatch, MiddlewareAPI, PayloadAction } from "@reduxjs/toolkit";
-import { auth, authInDataBase } from "../../services/auth";
+import { authInDataBase } from "../../services/auth";
 import { setIsLoading } from "../slice/uiSlice";
 import { setAuth } from "../slice/authSlice";
 
@@ -12,6 +12,7 @@ export const authMiddleware = (state: MiddlewareAPI) => {
             state.dispatch(setIsLoading(true))
             try {
                 const userCredential = await authInDataBase(action.payload.email, action.payload.password)
+                console.log(userCredential)
                 state.dispatch(
                     setAuth({
                         uid: userCredential.user.uid,

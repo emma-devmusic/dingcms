@@ -7,7 +7,7 @@ const initialState = {
 
 
 export const uiSlice = createSlice({
-    name: 'blogs',
+    name: 'ui',
     initialState: initialState,
     reducers: {
         setIsLoading(state, action: PayloadAction<boolean>){

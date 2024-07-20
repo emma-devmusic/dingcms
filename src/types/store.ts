@@ -14,12 +14,23 @@ export interface Entity {
     slug: string;
 }
 
-
-
 export interface Blog {
+    id: string;
+    data: DataBlog
+}
+
+export interface DataBlog {
+    category: string;
     title: string;
     html: string;
+    issue: string;
+    creator: string;
+    description: string;
+    image: string | ArrayBuffer | null;
+    id?: string;
+    date: Date | string
 }
+
 
 export interface BlogsState {
     blogs: Blog[];
@@ -30,8 +41,13 @@ export interface BlogsState {
 
 export interface NewBlog {
     entity: string;
-    blog: {
-        title: string;
-        html: string;
-    }
+    blog: Blog
+}
+
+export interface Category {
+    name: string;
+}
+
+export interface Categories {
+    categories: Category[]
 }

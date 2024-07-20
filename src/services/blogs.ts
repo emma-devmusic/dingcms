@@ -1,9 +1,8 @@
 
-import { doc, getDoc, getFirestore, collection, getDocs, setDoc, addDoc } from "firebase/firestore/lite";
+import { doc, getFirestore, collection, getDocs, addDoc, deleteDoc } from "firebase/firestore/lite";
 import { app } from "./firebase";
 import Swal from "sweetalert2";
-import { Blog } from "../types/store";
-import { useId } from "react";
+import { Blog, DataBlog } from "../types/store";
 
 
 //conect database
@@ -17,7 +16,7 @@ export const getterBlogFromDB = async (slug: string) => {
     const docSnap = await getDocs(blogsEntity);
     if (docSnap) {
         docSnap.forEach(e => {
-            blogsListItem.push(e.data() as Blog)
+            blogsListItem.push({id: e.id, data:e.data()} as Blog)
         })
     } else {
         Swal.fire('Sin Blogs', 'No hay blogs en esta página', 'warning')
@@ -27,17 +26,29 @@ export const getterBlogFromDB = async (slug: string) => {
 
 
 
-export const setBlogInDB = async ( entity:string , blog: { title: string; html: string }) => {
+export const setBlogInDB = async ( entity:string , blog: DataBlog) => {
 
-    const docToInsert = collection(db, "entity", `${entity}`, "blogs")
+    const collectionToInsert = collection(db, "entity", `${entity}`, "blogs")
     try {
-        const result = await addDoc( docToInsert, blog);
+        const result = await addDoc( collectionToInsert, blog);
         if(result) {
             Swal.fire('Nuevo Blog', 'Nuevo blog cargado con éxito.', 'success')
             location.reload()
         }
     } catch (error) {
         Swal.fire('Nuevo Blog', 'No pudo cargarse el nuevo blog', 'error')   
+    }
+}
+
+
+export const deleteBlogInDB = async ( entity: string, id: string ) => {
+
+
+    const docToDelete =  doc(db, "entity", `${entity}`, "blogs", `${id}`);
+    try {
+        await deleteDoc(docToDelete)
+    } catch (error) {
+        Swal.fire('Error Al Eliminar Blog', 'No pudo eliminarse el blog', 'error')   
     }
 }
 

@@ -4,6 +4,7 @@ import { Login } from "./views/Login";
 import { SelectPages } from "./views/SelectPages";
 import { BlogsEdit } from "./views/BlogsEdit";
 import { Profile } from "./views/Profile";
+import { BlogsPage } from "./views/BlogsPage";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
                 path: '/profile',
                 element: <Profile />
             },
+            {
+                path: '/blogs',
+                element: <BlogsPage />
+            }
         ]
     },
     {

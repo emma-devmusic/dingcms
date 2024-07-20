@@ -19,7 +19,7 @@ export const authSlice = createSlice({
             state.uid = action.payload.uid
         },
         login(state, action: PayloadAction<{email: string; password: string}>) {
-            //middleware
+            console.log(state, action)
         },
     },
 })

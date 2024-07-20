@@ -1,8 +1,9 @@
 import { setActiveBlog } from "../../redux/slice/blogsSlice";
 import { useAppDispatch } from "../../redux/store";
+import { DataBlog } from "../../types/store";
 
 interface Props {
-    blog: any
+    blog: DataBlog
 }
 
 
@@ -21,11 +22,11 @@ export const BlogListItem = ({blog}: Props) => {
             onClick={handleClick}
         >
             <div className="cms-list-blogs__img">
-                <img src="/img/team-2.jpg" alt="" />
+                <img src={`${blog.image}`} alt="" />
             </div>
-            <div>
+            <div className="list-blog-details">
                 <h6 className="m-0">{blog?.title}</h6>
-                <p className="text-muted ">Lorem ipsum dolor sit.</p>
+                <p className="text-muted m-0">{blog.description}</p>
             </div>
         </li>
     );
