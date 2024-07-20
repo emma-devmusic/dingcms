@@ -1,16 +1,11 @@
 import { useState, ChangeEvent } from "react";
 
-type FormState<T> = {
-    [K in keyof T]: string;
-}
+export const useForm = (initialState: any) => {
+    
+    const [values, setValues] = useState(initialState);
 
-type ReturnTypes<T> = [FormState<T>, (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void, () => void];
-
-export const useForm = <T extends Record<string, any>>(initialState: T): ReturnTypes<T> => {
-    const [values, setValues] = useState<FormState<T>>(initialState);
-
-    const reset = () => {
-        setValues(initialState);
+    const reset = (st: any) => {
+        setValues(st);
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

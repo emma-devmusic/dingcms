@@ -18,8 +18,6 @@ export const BlogResume = ({ previous }: Props) => {
     const params = useParams()
     const dispatch = useAppDispatch()
 
-    const dateBlog = new Date(blogActive.data.date).toLocaleDateString()
-
     const handlePrevious = () => {
         previous()
     }
@@ -28,12 +26,11 @@ export const BlogResume = ({ previous }: Props) => {
 
         const arg = {
             entity: params.id,
-            blog: blogActive
+            blog: blogActive.data
         }
 
         dispatch( newBlog(arg as NewBlog) )
     }
-
     return (
         <div className="container">
             <div className=" card p-4">
@@ -44,7 +41,7 @@ export const BlogResume = ({ previous }: Props) => {
                 <div className="card-body">
                     <p><strong>Titulo:</strong> <span>{blogActive.data.title}</span></p>
                     <p><strong>Editor:</strong> <span>{blogActive.data.creator}</span></p>
-                    <p><strong>Fecha:</strong> <span>{dateBlog}</span></p>
+                    <p><strong>Fecha:</strong> <span>{blogActive.data.date}</span></p>
                     <p><strong>Asunto:</strong> <span>{blogActive.data.issue}</span></p>
                     <p><strong>Descripción:</strong> <span>{blogActive.data.description}</span></p>
                     <p style={{

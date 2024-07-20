@@ -28,7 +28,7 @@ export interface DataBlog {
     description: string;
     image: string | ArrayBuffer | null;
     id?: string;
-    date: Date | string
+    date: string
 }
 
 
@@ -41,7 +41,7 @@ export interface BlogsState {
 
 export interface NewBlog {
     entity: string;
-    blog: Blog
+    blog: DataBlog
 }
 
 export interface Category {

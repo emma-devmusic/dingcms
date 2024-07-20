@@ -1,11 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Blog, BlogsState, DataBlog, NewBlog } from '../../types/store';
+import { Blog, BlogsState, NewBlog } from '../../types/store';
 
 
 const initialState: BlogsState = {
     blogs: [] as Blog[],
     blogsSelected: [] as Blog[],
-    blogActive: {} as Blog
+    blogActive: {
+        id: '',
+        data: {
+            category: '',
+            creator: '',
+            date: '',
+            description: '',
+            html: '',
+            image: '',
+            issue: '',
+            title: '',
+            id: ''
+        }
+    } as Blog
 }
 
 
@@ -25,17 +38,17 @@ export const blogsSlice = createSlice({
         setBlog(state, action: PayloadAction) {
             console.log(state, action)
         },
-        setActiveBlog(state, action: PayloadAction<DataBlog>) {
-            state.blogActive = {
-                ...state.blogActive,
-                ...action.payload
-            }
+        setActiveBlog(state, action: PayloadAction<Blog>) {
+            state.blogActive = action.payload
         },
         newBlog(state, action: PayloadAction<NewBlog>) {
             console.log(state, action)
         },
         deleteBlog(state, action: PayloadAction<{ id: string, entity: string }>) {
             console.log(state, action)
+        },
+        resetActiveBlog(state) {
+            state.blogActive = initialState.blogActive
         }
     },
 })
@@ -48,7 +61,8 @@ export const {
     setBlogs,
     setActiveBlog,
     newBlog,
-    deleteBlog
+    deleteBlog,
+    resetActiveBlog
 } = blogsSlice.actions
 
 export default blogsSlice.reducer

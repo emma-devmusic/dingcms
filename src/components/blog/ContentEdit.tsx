@@ -33,13 +33,13 @@ export const ContentEdit = ({ next, previous }: Props) => {
     }
 
     const handleNext = () => {
-        let blog: DataBlog = {} as DataBlog
+        let dataBlog: DataBlog = {} as DataBlog
         if (stateHtml) {
-            blog = {
+            dataBlog = {
                 ...blogActive.data,
                 html: stateHtml
             }
-            dispatch(setActiveBlog(blog))
+            dispatch(setActiveBlog({id: '', data: dataBlog}))
             next()
         }
     }

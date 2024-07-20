@@ -20,12 +20,12 @@ const BlogList = () => {
     }, [])
 
 
-    
+    console.log(blogs)
     return (
         <ul className="">
             {
                 blogs.map((blog: any, i:number) =>
-                    <BlogListItem blog={blog.data} key={i} />
+                    <BlogListItem blog={blog} key={i} />
                 )
             }
         </ul>

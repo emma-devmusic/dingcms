@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { useDropzone } from 'react-dropzone'
-import { useAppDispatch } from "../../redux/store";
-import { setActiveBlog } from "../../redux/slice/blogsSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { resetActiveBlog, setActiveBlog } from "../../redux/slice/blogsSlice";
 import { Category, DataBlog } from "../../types/store";
 import { getterCategoriesFromDB } from "../../services/categories";
 import Swal from "sweetalert2";
@@ -17,42 +17,47 @@ export const BlogDetails = ({ next }: Props) => {
 
     const params = useParams()
     const dispatch = useAppDispatch()
+    const { blogActive } = useAppSelector(state => state.blogs)
     const [categories, setCategories] = useState<Category[]>([]);
-    const [imageBlog, setImageBlog] = useState<string | ArrayBuffer >('')
-    const [values, handleInputChange] = useForm({
+    const [imageBlog, setImageBlog] = useState<string | ArrayBuffer>('')
+    const [values, handleInputChange, reset] = useForm({
         title: '',
         creator: '',
         category: '',
         issue: '',
         description: '',
         date: ''
-    })
-    
+    } as DataBlog)
+
+    useEffect(() => {
+        reset(blogActive.data)
+    }, [blogActive])
+
     useEffect(() => {
         getterCategoriesFromDB(params.id ?? '')
             .then(resp => setCategories(resp))
             .catch(err => console.error(err))
     }, [])
-    
+
     const onDrop = useCallback((acceptedFiles: any) => {
         let reader = new FileReader();
         reader.readAsDataURL(acceptedFiles[0]);
         reader.onload = () => setImageBlog(reader.result ?? '')
         reader.onerror = (err) => console.log(err)
     }, [])
-    
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-    
+
     const handleNext = (e: any) => {
         e.preventDefault()
-        const blog: DataBlog = {
+        const dataBlog: DataBlog = {
             ...values,
             image: imageBlog,
             html: '',
             date: (values.date === '') ? new Date().toLocaleDateString() : values.date
         }
-        if(imageBlog){
-            dispatch(setActiveBlog(blog))
+        if (imageBlog) {
+            dispatch(setActiveBlog({ id: '', data: dataBlog }))
             next()
         } else {
             Swal.fire('¡Falta la portada!', 'Selecciona una imagen de portada para el blog', 'warning')
@@ -61,7 +66,10 @@ export const BlogDetails = ({ next }: Props) => {
 
     return (
         <div className="mt-3 px-2">
-            <h2>Detalles del Blog</h2>
+            <div className="d-flex justify-content-between align-items-center">
+                <h2>Detalles del Blog</h2>
+                <button className="btn btn-primary" onClick={() => dispatch( resetActiveBlog() )}>Limpiar</button>
+            </div>
             <hr />
             <form className="d-flex flex-column" style={{ maxWidth: '600px' }} onSubmit={handleNext}>
                 <div className="input-group input-group-sm mb-3">
