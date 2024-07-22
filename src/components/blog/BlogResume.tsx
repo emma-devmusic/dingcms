@@ -43,6 +43,7 @@ export const BlogResume = ({ previous }: Props) => {
                     <p><strong>Editor:</strong> <span>{blogActive.data.creator}</span></p>
                     <p><strong>Fecha:</strong> <span>{blogActive.data.date}</span></p>
                     <p><strong>Asunto:</strong> <span>{blogActive.data.issue}</span></p>
+                    <p><strong>Categoría:</strong> <span>{blogActive.data.category}</span></p>
                     <p><strong>Descripción:</strong> <span>{blogActive.data.description}</span></p>
                     <p style={{
                         maxHeight: '200px',
