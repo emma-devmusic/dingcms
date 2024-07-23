@@ -39,6 +39,7 @@ export const BlogDetails = ({ next }: Props) => {
             .catch(err => console.error(err))
     }, [])
 
+    
     const onDrop = useCallback((acceptedFiles: any) => {
         let reader = new FileReader();
         reader.readAsDataURL(acceptedFiles[0]);
