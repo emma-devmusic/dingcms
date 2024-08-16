@@ -1,0 +1,3 @@
+{ 
+  "reescribe": [{ "origen": "/(.*)", "destino": "/index.html" }] 
+}
