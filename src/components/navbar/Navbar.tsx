@@ -1,15 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { auth } from "../../services/auth";
 import { signOut } from "firebase/auth";
 import Swal from "sweetalert2";
+import { useAppSelector } from "../../redux/store";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
-    const navigate = useNavigate()
+
+    // const navigate = useNavigate()
+
 
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
-                navigate('/login')
+                redirect('/login')
                 sessionStorage.clear()
             }).catch((error) => {
                 console.log(error)
@@ -26,15 +30,13 @@ export const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarScroll">
                     <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
-                        {/* <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/">Inicio</Link>
-                        </li> */}
                         <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/pages">Páginas Administradas</Link>
+                            <Link className="nav-link" to="/pages">Páginas Administradas</Link>
                         </li>
-                        {/* <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to="/clinica-giuliani">Clinica Giuliani</Link>
-                        </li> */}
+                        <li className="nav-item">
+                            <Link className="nav-link" aria-current="page" to={'/pages/entity-selected/blogs'}>Blogs</Link>
+                        </li>
+
                     </ul>
                     <form className="d-flex gap-3">
                         <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll ">

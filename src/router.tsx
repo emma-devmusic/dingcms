@@ -5,6 +5,7 @@ import { SelectPages } from "./views/SelectPages";
 import { BlogsEdit } from "./views/BlogsEdit";
 import { Profile } from "./views/Profile";
 import { BlogsPage } from "./views/BlogsPage";
+import { Welcome } from "./views/Welcome";
 
 export const router = createBrowserRouter([
     {
@@ -12,20 +13,24 @@ export const router = createBrowserRouter([
         element: <App/>,
         children: [
             {
-                path: 'pages',
-                element: <SelectPages />
+                path: '/',
+                element: <Welcome />
             },
             {
-                path: '/pages/:id',
-                element: <BlogsEdit />
+                path: 'pages',
+                element: <SelectPages />
             },
             {
                 path: '/profile',
                 element: <Profile />
             },
             {
-                path: '/blogs',
+                path: '/pages/entity-selected/blogs',
                 element: <BlogsPage />
+            },
+            {
+                path: '/pages/entity-selected/blog-settings',
+                element: <BlogsEdit />
             }
         ]
     },

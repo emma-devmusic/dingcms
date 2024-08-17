@@ -49,8 +49,7 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
                 Swal.fire('Error', 'Ocurrió un Error!', 'error');
             }
             state.dispatch(setIsLoading(false)) 
-
         }
-        
+
     }
 }

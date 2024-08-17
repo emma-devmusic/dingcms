@@ -13,7 +13,8 @@ const settings = {
     infinite: false,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1,
+    swipe: false
+    // slidesToScroll: 1,
 };
 
 

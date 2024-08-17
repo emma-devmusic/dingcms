@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Navbar } from "../navbar/Navbar";
 import { auth } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
     const navigate = useNavigate()
 
-    onAuthStateChanged(auth, (user) => {
-        if (!user) navigate('/login')
-    })
+    useEffect(()=> {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) navigate('/login')
+        })
+    },[])
 
     return (
         <div>

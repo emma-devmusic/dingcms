@@ -15,11 +15,11 @@ interface Props {
 
 export const BlogDetails = ({ next }: Props) => {
 
-    const params = useParams()
     const dispatch = useAppDispatch()
     const { blogActive } = useAppSelector(state => state.blogs)
+    const { entitySelected } = useAppSelector(state => state.entity)
     const [categories, setCategories] = useState<Category[]>([]);
-    const [imageBlog, setImageBlog] = useState<string | ArrayBuffer>('')
+    const [imageBlog, setImageBlog] = useState<string | ArrayBuffer | null>('')
     const [values, handleInputChange, reset] = useForm({
         title: '',
         creator: '',
@@ -31,19 +31,20 @@ export const BlogDetails = ({ next }: Props) => {
 
     useEffect(() => {
         reset(blogActive.data)
+        setImageBlog(blogActive.data.image)
     }, [blogActive])
 
     useEffect(() => {
-        getterCategoriesFromDB(params.id ?? '')
+        getterCategoriesFromDB(entitySelected.slug)
             .then(resp => setCategories(resp))
             .catch(err => console.error(err))
     }, [])
 
-    
+
     const onDrop = useCallback((acceptedFiles: any) => {
         let reader = new FileReader();
         reader.readAsDataURL(acceptedFiles[0]);
-        reader.onload = () => setImageBlog(reader.result ?? '')
+        reader.onload = () => (reader.result) && setImageBlog(reader.result)
         reader.onerror = (err) => console.log(err)
     }, [])
 
@@ -65,14 +66,18 @@ export const BlogDetails = ({ next }: Props) => {
         }
     }
 
+
     return (
         <div className="mt-3 px-2">
             <div className="d-flex justify-content-between align-items-center">
                 <h2>Detalles del Blog</h2>
-                <button className="btn btn-primary" onClick={() => dispatch( resetActiveBlog() )}>Limpiar</button>
+                <button className="btn btn-primary" onClick={() => dispatch(resetActiveBlog())}>Limpiar</button>
             </div>
             <hr />
-            <form className="d-flex flex-column" style={{ maxWidth: '600px' }} onSubmit={handleNext}>
+            <form className="d-flex flex-column" onSubmit={handleNext} style={{
+                maxWidth: '600px',
+                margin: '0 auto',
+            }} >
                 <div className="input-group input-group-sm mb-3">
                     <span className="input-group-text" id="inputGroup-sizing-sm" aria-label="title">Título</span>
                     <input
@@ -121,6 +126,17 @@ export const BlogDetails = ({ next }: Props) => {
 
                 <div className="form-floating">
                     <span className="form-label mb-2 d-block" >Imagen de portada</span>
+                    <div className="image-banner-blog rounded border p-3 mb-3">
+                        {
+                            imageBlog 
+                            ? <img src={imageBlog as string} style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                            }} />
+                            : <p className="text-center m-0">Sube una imagen de portada</p>
+                        }
+                    </div>
                     <div
                         {...getRootProps()}
                         className="border rounded p-2 mb-3 react-dropzone"

@@ -26,7 +26,7 @@ export interface DataBlog {
     issue: string;
     creator: string;
     description: string;
-    image: string | ArrayBuffer | null;
+    image: string | ArrayBuffer;
     id?: string;
     date: string
 }
