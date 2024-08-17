@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { BlogItem } from "../components/blog/BlogItem";
 import { LayoutViews } from "../components/layout/LayoutViews";
 import { useAppDispatch, useAppSelector } from "../redux/store";

@@ -1,9 +1,7 @@
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { auth } from "../../services/auth";
 import { signOut } from "firebase/auth";
 import Swal from "sweetalert2";
-import { useAppSelector } from "../../redux/store";
-import { useEffect, useState } from "react";
 
 export const Navbar = () => {
 

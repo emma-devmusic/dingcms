@@ -6,7 +6,6 @@ import { resetActiveBlog, setActiveBlog } from "../../redux/slice/blogsSlice";
 import { Category, DataBlog } from "../../types/store";
 import { getterCategoriesFromDB } from "../../services/categories";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
 
 
 interface Props {

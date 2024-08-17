@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { deleteBlog, resetActiveBlog, setActiveBlog } from "../../redux/slice/blogsSlice";
+import { deleteBlog, setActiveBlog } from "../../redux/slice/blogsSlice";
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { Blog } from "../../types/store";
 import { Edit } from "../../assets/icons/edit";

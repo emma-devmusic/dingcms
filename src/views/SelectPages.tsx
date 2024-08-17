@@ -1,4 +1,4 @@
-import { redirect, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../redux/store"
 import { useEffect } from 'react';
 import { getEntities, setSelectedEntity } from "../redux/slice/entitySlice"
