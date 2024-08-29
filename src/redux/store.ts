@@ -1,17 +1,20 @@
 import { configureStore, Middleware } from '@reduxjs/toolkit'
 import { useDispatch, useSelector} from 'react-redux'
+import { authMiddleware } from './middlewares/auth-middleware'
+import { userMiddleware } from './middlewares/user-middleware'
+import { entityMiddleware } from './middlewares/entity-middleware'
+import { blogMiddleware } from './middlewares/blog-middleware'
 import blogsReducer from './slice/blogsSlice'
 import authReducer from './slice/authSlice'
-import { authMiddleware } from './middlewares/auth-middleware'
-import uiReducer from './slice/uiSlice'
-import { entityMiddleware } from './middlewares/entity-middleware'
+import userReducer from './slice/userSlice'
 import entityReducer from './slice/entitySlice'
-import { blogMiddleware } from './middlewares/blog-middleware'
+import uiReducer from './slice/uiSlice'
 
 const middlewares = [
     authMiddleware,
     entityMiddleware,
-    blogMiddleware
+    blogMiddleware,
+    userMiddleware
 ] as Middleware[]
 
 export const store = configureStore({
@@ -19,7 +22,8 @@ export const store = configureStore({
         auth: authReducer,
         blogs: blogsReducer,
         ui: uiReducer,
-        entity: entityReducer
+        entity: entityReducer,
+        user: userReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,

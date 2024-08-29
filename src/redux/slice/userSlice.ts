@@ -20,14 +20,18 @@ export const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         setUser(state, action: PayloadAction<UserState>) {
-            state = {...state, ...action.payload}
+            state = { ...action.payload }
+        },
+        getUserData(state, action:PayloadAction<string>) {
+
         }
     }
 })
 
 // Action creators are generated for each case reducer function
 export const {
-    setUser
+    setUser,
+    getUserData
 } = userSlice.actions
 
 
