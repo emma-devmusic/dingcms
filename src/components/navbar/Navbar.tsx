@@ -1,22 +1,13 @@
-import { Link, redirect } from "react-router-dom";
-import { auth } from "../../services/auth";
-import { signOut } from "firebase/auth";
-import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import { logout } from "../../redux/slice/authSlice";
 
 export const Navbar = () => {
 
-    // const navigate = useNavigate()
-
+    const dispatch = useAppDispatch()
 
     const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                redirect('/login')
-                sessionStorage.clear()
-            }).catch((error) => {
-                console.log(error)
-                Swal.fire('Error', 'Hubo un error para salir de la sesion', 'error');
-            });
+        dispatch( logout() )
     }
 
     return (

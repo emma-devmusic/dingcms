@@ -1,7 +1,10 @@
 import { Dispatch, MiddlewareAPI, PayloadAction } from "@reduxjs/toolkit";
-import { authInDataBase } from "../../services/auth";
+import { auth } from "../../services/auth";
 import { setIsLoading } from "../slice/uiSlice";
-import { setAuth } from "../slice/authSlice";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import Swal from "sweetalert2";
+import { blogsClear } from "../slice/blogsSlice";
+import { entitiesClear } from "../slice/entitySlice";
 
 export const authMiddleware = (state: MiddlewareAPI) => {
     return (next: Dispatch) => async (action: PayloadAction<any>) => {
@@ -10,19 +13,22 @@ export const authMiddleware = (state: MiddlewareAPI) => {
 
         if (action.type === 'auth/login') {
             state.dispatch(setIsLoading(true))
-            try {
-                const userCredential = await authInDataBase(action.payload.email, action.payload.password)
-                console.log(userCredential)
-                state.dispatch(
-                    setAuth({
-                        uid: userCredential.user.uid,
-                        email: userCredential.user.email,
-                        name: userCredential.user.displayName
-                    }))
-            } catch (error) {
-                console.log(error)
-            }
-            state.dispatch(setIsLoading(false))
+            signInWithEmailAndPassword(auth, action.payload.email, action.payload.password)
+                .catch(() => Swal.fire('Error', 'Hubo un error al iniciar sesión', 'error'))
+                .finally(() => state.dispatch(setIsLoading(false)))
+        }
+
+        if (action.type === 'auth/logout') {
+            state.dispatch(setIsLoading(true))
+            signOut(auth)
+                .then(() => {
+                    state.dispatch(blogsClear())
+                    state.dispatch(entitiesClear())
+                    localStorage.removeItem('entity-selected')
+                })
+                .catch(() => Swal.fire('Error', 'Hubo un error al cerrar sesión, Verifica tu conexión a internet', 'error'))
+                .finally(() => state.dispatch(setIsLoading(false)))
+
         }
     }
 }

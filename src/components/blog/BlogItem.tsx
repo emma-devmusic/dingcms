@@ -13,6 +13,8 @@ export const BlogItem = ({ blog }: { blog: any }) => {
     const { id, data } = blog as Blog
     const { slug } = useAppSelector(state => state.entity.entitySelected)
 
+    console.log(blog)
+
     const handleDelete = () => {
         Swal.fire({
             title: "Are you sure?",

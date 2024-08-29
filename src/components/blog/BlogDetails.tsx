@@ -6,6 +6,7 @@ import { resetActiveBlog, setActiveBlog } from "../../redux/slice/blogsSlice";
 import { Category, DataBlog } from "../../types/store";
 import { getterCategoriesFromDB } from "../../services/categories";
 import Swal from "sweetalert2";
+import { toSlug } from "../../helpers/functions";
 
 
 interface Props {
@@ -34,10 +35,11 @@ export const BlogDetails = ({ next }: Props) => {
     }, [blogActive])
 
     useEffect(() => {
+        if(entitySelected.slug !== '')
         getterCategoriesFromDB(entitySelected.slug)
             .then(resp => setCategories(resp))
             .catch(err => console.error(err))
-    }, [])
+    }, [entitySelected])
 
 
     const onDrop = useCallback((acceptedFiles: any) => {
@@ -54,11 +56,11 @@ export const BlogDetails = ({ next }: Props) => {
         const dataBlog: DataBlog = {
             ...values,
             image: imageBlog,
-            html: '',
-            date: (values.date === '') ? new Date().toLocaleDateString() : values.date
+            date: (values.date === '') ? new Date().toLocaleDateString() : values.date,
+            id: toSlug(values.title)
         }
         if (imageBlog) {
-            dispatch(setActiveBlog({ id: '', data: dataBlog }))
+            dispatch(setActiveBlog({ id: toSlug(values.title), data: dataBlog }))
             next()
         } else {
             Swal.fire('¡Falta la portada!', 'Selecciona una imagen de portada para el blog', 'warning')

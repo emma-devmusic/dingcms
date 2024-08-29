@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { newBlog } from "../../redux/slice/blogsSlice";
 import { NewBlog } from "../../types/store";
@@ -14,8 +14,8 @@ interface Props {
 export const BlogResume = ({ previous }: Props) => {
 
     const { blogActive } = useAppSelector(state => state.blogs)
+    const { entitySelected } = useAppSelector(state => state.entity)
 
-    const params = useParams()
     const dispatch = useAppDispatch()
 
     const handlePrevious = () => {
@@ -25,10 +25,11 @@ export const BlogResume = ({ previous }: Props) => {
     const handlePublish = () => {
 
         const arg = {
-            entity: params.id,
-            blog: blogActive.data
+            entity: entitySelected.slug,
+            blog: blogActive.data,
+            id: blogActive.id
         }
-
+        
         dispatch( newBlog(arg as NewBlog) )
     }
     return (

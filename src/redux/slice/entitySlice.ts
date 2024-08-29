@@ -20,6 +20,9 @@ export const entitySlice = createSlice({
         },
         setSelectedEntity(state, action: PayloadAction<{ name: string, slug: string }>) {
             state.entitySelected = action.payload
+        },
+        entitiesClear(state) {
+            state = {...state, ...initialState}
         }
     },
 })
@@ -28,7 +31,8 @@ export const entitySlice = createSlice({
 export const {
     getEntities,
     setEntities,
-    setSelectedEntity
+    setSelectedEntity,
+    entitiesClear
 } = entitySlice.actions
 
 

@@ -49,6 +49,9 @@ export const blogsSlice = createSlice({
         },
         resetActiveBlog(state) {
             state.blogActive = initialState.blogActive
+        },
+        blogsClear(state) {
+            state = {...state, ...initialState}
         }
     },
 })
@@ -62,7 +65,8 @@ export const {
     setActiveBlog,
     newBlog,
     deleteBlog,
-    resetActiveBlog
+    resetActiveBlog,
+    blogsClear
 } = blogsSlice.actions
 
 export default blogsSlice.reducer

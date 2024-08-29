@@ -9,15 +9,17 @@ export const SelectPages = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
-    const { entities } = useAppSelector(state => state.entity)
+    const { entities, entitySelected } = useAppSelector(state => state.entity)
     const { isLoading } = useAppSelector(state => state.ui)
 
     useEffect(() => {
-        dispatch(getEntities())
+        if(entities.length === 0) dispatch(getEntities())
     }, [])
 
     const hadleClickEntity = (entity: { name: string, slug: string; }, link: string) => {
-        dispatch(setSelectedEntity(entity))
+        if(entitySelected.slug !== entity.slug){
+            dispatch(setSelectedEntity(entity))
+        }
         navigate(link)
     }
 

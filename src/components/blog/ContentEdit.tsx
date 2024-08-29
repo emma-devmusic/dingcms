@@ -59,7 +59,7 @@ export const ContentEdit = ({ next, previous }: Props) => {
                 ...blogActive.data,
                 html: stateHtml
             }
-            dispatch(setActiveBlog({ id: '', data: dataBlog }))
+            dispatch(setActiveBlog({ id: blogActive.id, data: dataBlog }))
             next()
         }
     }
@@ -89,6 +89,7 @@ export const ContentEdit = ({ next, previous }: Props) => {
                         onChange={setStateHtml} 
                         formats={['bold', 'italic', 'underline', 'strike','blockquote', 'code-block','link', 'image', 'video', 'formula', 'header', 'size', 'align', 'color', 'background', 'list', 'font', 'indent', 'script', 'direction']}
                         modules={modules}
+                        style={{minHeight:'500px'}}
                     />
                 </div>
 

@@ -1,5 +1,5 @@
 
-import { doc, getFirestore, collection, getDocs, addDoc, deleteDoc } from "firebase/firestore/lite";
+import { doc, getFirestore, collection, getDocs, setDoc, deleteDoc } from "firebase/firestore/lite";
 import { app } from "./firebase";
 import Swal from "sweetalert2";
 import { Blog, DataBlog } from "../types/store";
@@ -26,15 +26,12 @@ export const getterBlogFromDB = async (slug: string) => {
 
 
 
-export const setBlogInDB = async ( entity:string , blog: DataBlog) => {
+export const setBlogInDB = async ( entity:string , blog: DataBlog, blogId: string) => {
 
-    const collectionToInsert = collection(db, "entity", `${entity}`, "blogs")
+    const collectionToInsert = doc(db, "entity", `${entity}`, "blogs", `${blogId}`);
     try {
-        const result = await addDoc( collectionToInsert, blog);
-        if(result) {
-            Swal.fire('Nuevo Blog', 'Nuevo blog cargado con éxito.', 'success')
-            location.reload()
-        }
+        await setDoc( collectionToInsert, blog );
+        Swal.fire('Nuevo Blog', 'Nuevo blog cargado con éxito.', 'success')
     } catch (error) {
         Swal.fire('Nuevo Blog', 'No pudo cargarse el nuevo blog', 'error')   
     }

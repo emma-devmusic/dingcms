@@ -1,7 +1,11 @@
 export interface AuthState {
-    uid: string;
-    name: string;
-    email: string;
+    name: string | null;
+    email: string | null;
+    instagram?: string | null;
+    pages?: string[] | null;
+    uid: string | null;
+    image?: string | null;
+    phone?: string | null;
 }
 
 export interface EntityState {
@@ -40,6 +44,7 @@ export interface BlogsState {
 
 
 export interface NewBlog {
+    id: string;
     entity: string;
     blog: DataBlog
 }
@@ -50,4 +55,17 @@ export interface Category {
 
 export interface Categories {
     categories: Category[]
+}
+
+
+export interface UserState {
+    user: {
+        name: string;
+        email: string;
+        instagram: string;
+        pages: string[];
+        uid: string;
+        image: string;
+        phone: string;
+    }
 }
