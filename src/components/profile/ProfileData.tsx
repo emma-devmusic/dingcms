@@ -1,16 +1,16 @@
+import { PagesAdmin } from '../../types/store';
 import './profile.css'
 
 interface Props {
     name: string | null;
     email: string | null;
-    uid: string | null;
-    pagesAdmin: string[];
+    pagesAdmin: PagesAdmin[] | null;
     instagram: string;
+    phone: string;
 }
 
-export const ProfileData = ({name, email, uid, instagram, pagesAdmin}: Props) => {
+export const ProfileData = ({name, email, instagram, pagesAdmin, phone}: Props) => {
 
-    console.log(uid)
 
     return (
         <div className="row py-5 px-4">
@@ -26,12 +26,15 @@ export const ProfileData = ({name, email, uid, instagram, pagesAdmin}: Props) =>
                                     width="130"
                                     className="rounded mb-2 img-thumbnail"
                                 />
-                                <a href={instagram} className="btn btn-outline-dark btn-sm btn-block">Instagram</a>
+                                <a href={instagram} target='_blank' className="btn btn-outline-dark btn-sm btn-block">Instagram</a>
                             </div>
                             <div className="media-body mb-5 text-white">
                                 <h4 className="mt-0 mb-0">{name}</h4>
-                                <p className="small mb-4">
+                                <p className="small m-0">
                                     <i className="fas fa-map-marker-alt mr-2"></i>{email}
+                                </p>
+                                <p className="small mb-4">
+                                    <i className="fas fa-map-marker-alt mr-2"></i>{phone}
                                 </p>
                             </div>
                         </div>
@@ -59,11 +62,13 @@ export const ProfileData = ({name, email, uid, instagram, pagesAdmin}: Props) =>
                         </ul>
                     </div> */}
                     <div className="px-4 py-3 mt-5">
-                        <h5 className="mb-0">Páginas Administradas</h5>
-                        <div className="p-4 rounded shadow-sm bg-light">
+                        <h5 className="mb-2">Páginas Administradas</h5>
+                        <div className="p-4 rounded shadow-sm bg-light list-group">
                             {
-                                pagesAdmin.map((page, index) => 
-                                    <p key={index} className="font-italic mb-0">{page}</p>
+                                pagesAdmin && pagesAdmin.map((page, index) => 
+                                    <div key={page.url}>
+                                        <a href={page.url} key={index} target='_blank' className="list-group-item list-group-item-action">{page.name}</a>
+                                    </div>
                                 )
                             }
                         </div>

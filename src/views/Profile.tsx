@@ -4,17 +4,17 @@ import { useAppSelector } from "../redux/store";
 
 export const Profile = () => {
 
-    const { uid, name, email } = useAppSelector(state => state.auth)
-
+    const { user } = useAppSelector(state => state.user)
+    const { name, email, pages, instagram, phone } = user;
     return (
         <LayoutViews pageTitle="Perfil de Usuario">
             <div className="row">
                 <ProfileData 
                     name={name}
                     email={email}
-                    instagram=""
-                    pagesAdmin={[]}
-                    uid={uid}
+                    instagram={instagram ?? ''}
+                    pagesAdmin={pages}
+                    phone={phone ?? ''}
                 />
             </div>
         </LayoutViews>

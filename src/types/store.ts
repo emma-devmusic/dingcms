@@ -1,11 +1,7 @@
 export interface AuthState {
     name: string | null;
     email: string | null;
-    instagram?: string | null;
-    pages?: string[] | null;
     uid: string | null;
-    image?: string | null;
-    phone?: string | null;
 }
 
 export interface EntityState {
@@ -59,13 +55,17 @@ export interface Categories {
 
 
 export interface UserState {
-    user: {
-        name: string;
-        email: string;
-        instagram: string;
-        pages: string[];
-        uid: string;
-        image: string;
-        phone: string;
-    }
+    name: string | null;
+    email: string | null;
+    instagram: string | null;
+    pages: PagesAdmin[] | null;
+    image: string | null;
+    phone: string | null;
 }
+
+export interface PagesAdmin {
+    name: string;
+    url: string;
+    slug: string;
+}
+

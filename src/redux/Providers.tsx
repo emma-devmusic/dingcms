@@ -7,6 +7,7 @@ import { auth } from "../services/auth";
 import { logout, setAuth } from "./slice/authSlice";
 import { isExpired } from "../helpers/functions";
 import Swal from "sweetalert2";
+import { getUserData } from "./slice/userSlice";
 
 export const Providers = ({ children }: { children: ReactNode }) => {
 
@@ -21,14 +22,12 @@ export const Providers = ({ children }: { children: ReactNode }) => {
                         })
                     }
                 });
+                store.dispatch( getUserData(user.email ?? '') )
                 store.dispatch(
                     setAuth({
                         uid: user.uid,
                         email: user.email,
-                        name: user.displayName,
-                        image: user.photoURL,
-                        phone: user.phoneNumber,
-                        instagram: '',
+                        name: user.displayName
                     }))
             } else {
                 store.dispatch(logout())

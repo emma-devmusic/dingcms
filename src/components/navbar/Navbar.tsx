@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { logout } from "../../redux/slice/authSlice";
 
 export const Navbar = () => {
 
     const dispatch = useAppDispatch()
+    const { entitySelected } = useAppSelector( state=> state.entity )
 
     const handleLogout = () => {
         dispatch( logout() )
@@ -22,9 +23,12 @@ export const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/pages">Páginas Administradas</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" aria-current="page" to={'/pages/entity-selected/blogs'}>Blogs</Link>
-                        </li>
+                        {
+                            entitySelected.name &&
+                            <li className="nav-item">
+                                <Link className="nav-link" aria-current="page" to={'/pages/entity-selected/blogs'}>Blogs</Link>
+                            </li>
+                        }
 
                     </ul>
                     <form className="d-flex gap-3">

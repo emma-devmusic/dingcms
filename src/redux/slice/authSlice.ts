@@ -6,10 +6,6 @@ const initialState:AuthState = {
     uid: null,
     name: null,
     email: null,
-    image: null,
-    instagram: null,
-    pages: [],
-    phone: null,
 }
 
 
@@ -20,11 +16,7 @@ export const authSlice = createSlice({
         setAuth(state, action: PayloadAction<AuthState>) {
             state.email = action.payload.email;
             state.name = action.payload.name
-            state.uid = action.payload.uid,
-            state.image = action.payload.image
-            state.instagram = action.payload.instagram
-            state.pages = action.payload.pages
-            state.phone = action.payload.phone
+            state.uid = action.payload.uid
         },
         login() {
 
