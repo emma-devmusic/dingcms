@@ -43,6 +43,10 @@ export const BlogDetails = ({ next }: Props) => {
 
 
     const onDrop = useCallback((acceptedFiles: any) => {
+        if(acceptedFiles[0].size > 2000000) {
+            Swal.fire('Tamaño de archivo excesivo!', 'El archivo debe pesar menos de 2MB', 'warning')
+            return
+        }
         let reader = new FileReader();
         reader.readAsDataURL(acceptedFiles[0]);
         reader.onload = () => (reader.result) && setImageBlog(reader.result)

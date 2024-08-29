@@ -30,7 +30,6 @@ export const authSlice = createSlice({
 
         },
         logout(state){
-            //middleware
             state = {...state, ...initialState};
         }
     },
