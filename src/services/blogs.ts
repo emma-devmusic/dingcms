@@ -1,5 +1,5 @@
 
-import { doc, getFirestore, collection, getDocs, setDoc, deleteDoc } from "firebase/firestore/lite";
+import { doc, getFirestore, collection, getDocs, setDoc, deleteDoc, updateDoc  } from "firebase/firestore";
 import { app } from "./firebase";
 import Swal from "sweetalert2";
 import { Blog, DataBlog } from "../types/store";
@@ -40,7 +40,6 @@ export const setBlogInDB = async ( entity:string , blog: DataBlog, blogId: strin
 
 export const deleteBlogInDB = async ( entity: string, id: string ) => {
 
-
     const docToDelete =  doc(db, "entity", `${entity}`, "blogs", `${id}`);
     try {
         await deleteDoc(docToDelete)
@@ -49,3 +48,14 @@ export const deleteBlogInDB = async ( entity: string, id: string ) => {
     }
 }
 
+
+export const updateBlogsInDB = async ( entity: string, blog: DataBlog, id:string ) => {
+
+    const docToUpdate =  doc(db, "entity", `${entity}`, "blogs", `${id}`);
+    try {
+        await updateDoc(docToUpdate, {...blog});
+        Swal.fire('Blog Actualizado', 'El blog ha sido actualizado con éxito.', 'success')
+    } catch (error) {
+        Swal.fire('Error Al Actualizar Blog', 'No pudo actualizarse el blog', 'error')   
+    }
+} 

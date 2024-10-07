@@ -1,7 +1,8 @@
 
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { newBlog } from "../../redux/slice/blogsSlice";
+import { newBlog, updateBlog } from "../../redux/slice/blogsSlice";
 import { NewBlog } from "../../types/store";
+import dayjs from "dayjs";
 
 
 
@@ -13,7 +14,7 @@ interface Props {
 
 export const BlogResume = ({ previous }: Props) => {
 
-    const { blogActive } = useAppSelector(state => state.blogs)
+    const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
 
     const dispatch = useAppDispatch()
@@ -29,8 +30,14 @@ export const BlogResume = ({ previous }: Props) => {
             blog: blogActive.data,
             id: blogActive.id
         }
+        // console.log(arg)
+        if(isUpdating) {
+            dispatch( updateBlog( arg ))
+        } else {
+            dispatch( newBlog(arg as NewBlog) )
+        }
         
-        dispatch( newBlog(arg as NewBlog) )
+        
     }
     return (
         <div className="container">
@@ -42,7 +49,7 @@ export const BlogResume = ({ previous }: Props) => {
                 <div className="card-body">
                     <p><strong>Titulo:</strong> <span>{blogActive.data.title}</span></p>
                     <p><strong>Editor:</strong> <span>{blogActive.data.creator}</span></p>
-                    <p><strong>Fecha:</strong> <span>{blogActive.data.date}</span></p>
+                    <p><strong>Fecha:</strong> <span>{dayjs(blogActive.data.date).format('DD/MM/YYYY')}</span></p>
                     <p><strong>Asunto:</strong> <span>{blogActive.data.issue}</span></p>
                     <p><strong>Categoría:</strong> <span>{blogActive.data.category}</span></p>
                     <p><strong>Descripción:</strong> <span>{blogActive.data.description}</span></p>

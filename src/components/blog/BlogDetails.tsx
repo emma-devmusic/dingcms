@@ -7,6 +7,7 @@ import { Category, DataBlog } from "../../types/store";
 import { getterCategoriesFromDB } from "../../services/categories";
 import Swal from "sweetalert2";
 import { toSlug } from "../../helpers/functions";
+import dayjs from "dayjs";
 
 
 interface Props {
@@ -16,7 +17,7 @@ interface Props {
 export const BlogDetails = ({ next }: Props) => {
 
     const dispatch = useAppDispatch()
-    const { blogActive } = useAppSelector(state => state.blogs)
+    const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
     const [categories, setCategories] = useState<Category[]>([]);
     const [imageBlog, setImageBlog] = useState<string | ArrayBuffer | null>('')
@@ -60,11 +61,12 @@ export const BlogDetails = ({ next }: Props) => {
         const dataBlog: DataBlog = {
             ...values,
             image: imageBlog,
-            date: (values.date === '') ? new Date().toLocaleDateString() : values.date,
+            date: dayjs(values.date).format('YYYY-MM-DD'),
             id: toSlug(values.title)
         }
+        console.log(dataBlog.date)
         if (imageBlog) {
-            dispatch(setActiveBlog({ id: toSlug(values.title), data: dataBlog }))
+            dispatch(setActiveBlog({ blog:{ id: toSlug(values.title), data: dataBlog }, isUpdating }))
             next()
         } else {
             Swal.fire('¡Falta la portada!', 'Selecciona una imagen de portada para el blog', 'warning')
@@ -102,7 +104,7 @@ export const BlogDetails = ({ next }: Props) => {
                     <input
                         value={values.date}
                         onChange={handleInputChange}
-                        type="text" className="form-control" aria-label="date" name="date" aria-describedby="inputGroup-sizing-sm" required />
+                        type="date" className="form-control" aria-label="date" name="date" aria-describedby="inputGroup-sizing-sm" required />
                 </div>
                 <div className="input-group input-group-sm mb-3">
                     <span className="input-group-text" id="inputGroup-sizing-sm" aria-label="issue">Tema</span>

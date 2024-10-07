@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore/lite";
+import { collection, getDocs } from "firebase/firestore";
 import Swal from "sweetalert2";
 import { db } from "./firebase";
 import { Entity } from "../types/store";

@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { Category } from '../types/store';
 import { db } from "./firebase";
-import { collection, getDocs } from "firebase/firestore/lite";
+import { collection, getDocs } from "firebase/firestore";
 
 export const getterCategoriesFromDB = async (slug: string) => {
 

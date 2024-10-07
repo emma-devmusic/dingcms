@@ -35,7 +35,8 @@ export interface DataBlog {
 export interface BlogsState {
     blogs: Blog[];
     blogsSelected: Blog[];
-    blogActive: Blog
+    blogActive: Blog;
+    isUpdating: boolean;
 }
 
 

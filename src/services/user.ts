@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore/lite";
+import { doc, getDoc } from "firebase/firestore";
 import { UserState } from "../types/store";
 
 export const getUserDataFromDB = async (emailUser: string) => {

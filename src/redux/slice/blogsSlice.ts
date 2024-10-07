@@ -18,7 +18,8 @@ const initialState: BlogsState = {
             title: '',
             id: ''
         }
-    } as Blog
+    } as Blog,
+    isUpdating: false,
 }
 
 
@@ -38,8 +39,9 @@ export const blogsSlice = createSlice({
         setBlog(state, action: PayloadAction) {
             console.log(state, action)
         },
-        setActiveBlog(state, action: PayloadAction<Blog>) {
-            state.blogActive = action.payload
+        setActiveBlog(state, action: PayloadAction<{blog: Blog; isUpdating: boolean}>) {
+            state.blogActive = action.payload.blog
+            state.isUpdating = action.payload.isUpdating
         },
         newBlog(state, action: PayloadAction<NewBlog>) {
             console.log(state, action)
@@ -49,9 +51,13 @@ export const blogsSlice = createSlice({
         },
         resetActiveBlog(state) {
             state.blogActive = initialState.blogActive
+            state.isUpdating = false
         },
         blogsClear(state) {
             state = {...state, ...initialState}
+        },
+        updateBlog(state, action: PayloadAction<NewBlog>){
+            console.log(state, action)
         }
     },
 })
@@ -66,7 +72,8 @@ export const {
     newBlog,
     deleteBlog,
     resetActiveBlog,
-    blogsClear
+    blogsClear,
+    updateBlog
 } = blogsSlice.actions
 
 export default blogsSlice.reducer

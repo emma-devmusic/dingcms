@@ -37,7 +37,7 @@ const toolbarOptions = [
 
 export const ContentEdit = ({ next, previous }: Props) => {
 
-    const { blogActive } = useAppSelector(state => state.blogs)
+    const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
     const [stateHtml, setStateHtml] = useState<string | undefined>(blogActive.data.html)
 
 
@@ -59,7 +59,9 @@ export const ContentEdit = ({ next, previous }: Props) => {
                 ...blogActive.data,
                 html: stateHtml
             }
-            dispatch(setActiveBlog({ id: blogActive.id, data: dataBlog }))
+            // dispatch(setActiveBlog({ id: blogActive.id, data: dataBlog }))
+            dispatch(setActiveBlog({ blog:{ id: blogActive.id, data: dataBlog }, isUpdating }))
+
             next()
         }
     }

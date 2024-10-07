@@ -69,3 +69,10 @@
     object-fit: cover;
     border-radius: 50px;
 }
+
+
+
+
+.page-link:hover {
+    cursor: pointer;
+}
