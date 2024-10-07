@@ -2,7 +2,7 @@ import { Dispatch, MiddlewareAPI, PayloadAction } from "@reduxjs/toolkit";
 import { setIsLoading } from "../slice/uiSlice";
 import Swal from "sweetalert2";
 import { deleteBlogInDB, getterBlogFromDB, setBlogInDB, updateBlogsInDB } from "../../services/blogs";
-import { getBlogs, setBlogs, updateBlog } from "../slice/blogsSlice";
+import { getBlogs, setBlogs } from "../slice/blogsSlice";
 import { RootState } from "../store";
 
 export const blogMiddleware = (state: MiddlewareAPI) => {

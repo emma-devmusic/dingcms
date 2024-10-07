@@ -13,7 +13,7 @@ export const BlogListItem = ({blog}: Props) => {
     const dispatch = useAppDispatch()
 
     const handleClick = () => {
-        dispatch( setActiveBlog( blog ) )
+        dispatch( setActiveBlog( {blog, isUpdating: true} ) )
     }
 
     return (
