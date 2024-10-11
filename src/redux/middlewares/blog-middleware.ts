@@ -26,7 +26,7 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
         if (action.type === 'blogs/newBlog') {
             try {
                 await setBlogInDB(action.payload.entity, action.payload.blog, action.payload.id)
-                location.replace('pages/entity-selected/blogs')
+                history.back()
             } catch (err) {
                 Swal.fire('Error', 'Ocurrió un Error!', 'error');
             }
