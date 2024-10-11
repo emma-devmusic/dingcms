@@ -19,16 +19,16 @@ export const toSlug = (text: string): string => {
 }
 
 
-export const keywords = (title) => {
+export const keywords = (title:string) => {
     const keywords = title.toLowerCase().split(' ')
-    const normalizeText = (text) => {
+    const normalizeText = (text:string) => {
         return text
             .toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "") // Elimina acentos
     };
-    const splitNumbers = (word) => word.match(/[a-z]+|\d+/gi);
-    const processKeywords = (words) => words.flatMap((word) => splitNumbers(word))
+    const splitNumbers = (word:string) => word.match(/[a-z]+|\d+/gi);
+    const processKeywords = (words:string[]) => words.flatMap((word:string) => splitNumbers(word))
     const allKeywords = [...keywords, ...processKeywords(normalizeText(title).split(' '))];
 
     return [...new Set(allKeywords)]
