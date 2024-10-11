@@ -3,6 +3,7 @@ import { doc, getFirestore, collection, getDocs, setDoc, deleteDoc, updateDoc  }
 import { app } from "./firebase";
 import Swal from "sweetalert2";
 import { Blog, DataBlog } from "../types/store";
+import { addKeywordsOnBlog } from "../helpers/functions";
 
 
 //conect database
@@ -29,8 +30,9 @@ export const getterBlogFromDB = async (slug: string) => {
 export const setBlogInDB = async ( entity:string , blog: DataBlog, blogId: string) => {
 
     const collectionToInsert = doc(db, "entity", `${entity}`, "blogs", `${blogId}`);
+    
     try {
-        await setDoc( collectionToInsert, blog );
+        await setDoc( collectionToInsert, {...addKeywordsOnBlog(blog)} );
         Swal.fire('Nuevo Blog', 'Nuevo blog cargado con éxito.', 'success')
     } catch (error) {
         Swal.fire('Nuevo Blog', 'No pudo cargarse el nuevo blog', 'error')   
@@ -51,9 +53,14 @@ export const deleteBlogInDB = async ( entity: string, id: string ) => {
 
 export const updateBlogsInDB = async ( entity: string, blog: DataBlog, id:string ) => {
 
+
     const docToUpdate =  doc(db, "entity", `${entity}`, "blogs", `${id}`);
+
+    // console.log(addKeywords(blog.title))
+    
+
     try {
-        await updateDoc(docToUpdate, {...blog});
+        await updateDoc(docToUpdate, {...addKeywordsOnBlog(blog)});
         Swal.fire('Blog Actualizado', 'El blog ha sido actualizado con éxito.', 'success')
     } catch (error) {
         Swal.fire('Error Al Actualizar Blog', 'No pudo actualizarse el blog', 'error')   

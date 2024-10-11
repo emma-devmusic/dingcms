@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { newBlog, updateBlog } from "../../redux/slice/blogsSlice";
 import { NewBlog } from "../../types/store";
 import dayjs from "dayjs";
+import { setIsLoading } from "../../redux/slice/uiSlice";
 
 
 
@@ -10,13 +11,11 @@ interface Props {
     previous: any;
 }
 
-
-
 export const BlogResume = ({ previous }: Props) => {
 
     const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
-
+    const { isLoading } = useAppSelector(state => state.ui)
     const dispatch = useAppDispatch()
 
     const handlePrevious = () => {
@@ -24,21 +23,27 @@ export const BlogResume = ({ previous }: Props) => {
     }
 
     const handlePublish = () => {
-
         const arg = {
             entity: entitySelected.slug,
             blog: blogActive.data,
             id: blogActive.id
         }
-        // console.log(arg)
-        if(isUpdating) {
-            dispatch( updateBlog( arg ))
+        dispatch(setIsLoading(true))
+        if (isUpdating) {
+            dispatch(updateBlog(arg))
         } else {
-            dispatch( newBlog(arg as NewBlog) )
+            dispatch(newBlog(arg as NewBlog))
         }
-        
-        
+
+
     }
+    if (isLoading)
+        return <div className="d-flex justify-content-center align-items-center" style={{
+            height: '400px'
+        }}>
+            <div className="spinner-border" role="status"></div>
+        </div>
+
     return (
         <div className="container">
             <div className=" card p-4">

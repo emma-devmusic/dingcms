@@ -24,7 +24,6 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
 
 
         if (action.type === 'blogs/newBlog') {
-            state.dispatch(setIsLoading(true))
             try {
                 await setBlogInDB(action.payload.entity, action.payload.blog, action.payload.id)
                 location.replace('pages/entity-selected/blogs')
@@ -46,14 +45,14 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
                     text: "Your file has been deleted.",
                     icon: "success"
                 });
+                state.dispatch(setIsLoading(false))
             } catch (err) {
+                state.dispatch(setIsLoading(false))
                 Swal.fire('Error', 'Ocurrió un Error!', 'error');
             }
-            state.dispatch(setIsLoading(false))
         }
 
         if (action.type === 'blogs/updateBlog') {
-            state.dispatch(setIsLoading(true))
             try {
                 await updateBlogsInDB(action.payload.entity, action.payload.blog, action.payload.id)
                 Swal.fire({
@@ -62,11 +61,12 @@ export const blogMiddleware = (state: MiddlewareAPI) => {
                     icon: "success"
                 });
                 history.back()
-                state.dispatch( getBlogs( action.payload.entity ) )
+                state.dispatch(getBlogs(action.payload.entity))
+                state.dispatch(setIsLoading(false))
             } catch (err) {
+                state.dispatch(setIsLoading(false))
                 Swal.fire('Error', 'Ocurrió un error actualizando el blog!', 'error');
             }
-            state.dispatch(setIsLoading(false))
         }
     }
 }
