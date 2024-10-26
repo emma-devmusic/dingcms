@@ -39,6 +39,18 @@ export const setBlogInDB = async ( entity:string , blog: DataBlog, blogId: strin
     }
 }
 
+export const setSesionInDB = async ( entity:string , blog: DataBlog, blogId: string) => {
+
+    const collectionToInsert = doc(db, "entity", `${entity}`, "sesiones", `${blogId}`);
+    
+    try {
+        await setDoc( collectionToInsert, {...addKeywordsOnBlog(blog)} );
+        Swal.fire('Nuevo Blog', 'Nuevo blog cargado con éxito.', 'success')
+    } catch (error) {
+        Swal.fire('Nuevo Blog', 'No pudo cargarse el nuevo blog', 'error')   
+    }
+}
+
 
 export const deleteBlogInDB = async ( entity: string, id: string ) => {
 
@@ -53,12 +65,18 @@ export const deleteBlogInDB = async ( entity: string, id: string ) => {
 
 export const updateBlogsInDB = async ( entity: string, blog: DataBlog, id:string ) => {
 
-
     const docToUpdate =  doc(db, "entity", `${entity}`, "blogs", `${id}`);
+    try {
+        await updateDoc(docToUpdate, {...addKeywordsOnBlog(blog)});
+        Swal.fire('Blog Actualizado', 'El blog ha sido actualizado con éxito.', 'success')
+    } catch (error) {
+        Swal.fire('Error Al Actualizar Blog', 'No pudo actualizarse el blog', 'error')   
+    }
+} 
 
-    // console.log(addKeywords(blog.title))
-    
+export const updateSesionInDB = async ( entity: string, blog: DataBlog, id:string ) => {
 
+    const docToUpdate =  doc(db, "entity", `${entity}`, "sesiones", `${id}`);
     try {
         await updateDoc(docToUpdate, {...addKeywordsOnBlog(blog)});
         Swal.fire('Blog Actualizado', 'El blog ha sido actualizado con éxito.', 'success')
