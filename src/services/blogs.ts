@@ -1,12 +1,9 @@
 
-import { doc, collection, getDocs, setDoc, deleteDoc, updateDoc  } from "firebase/firestore";
-import { db } from "./firebase";
 import Swal from "sweetalert2";
+import { doc, collection, getDocs, setDoc, deleteDoc, updateDoc  } from "firebase/firestore";
 import { Blog, BlogTypes, DataBlog } from "../types/store";
 import { addKeywordsOnBlog } from "../helpers/functions";
-
-
-// export const db = getFirestore(app);
+import { db } from "./firebase";
 
 export const getterBlogFromDB = async (slug: string, type: BlogTypes) => {
 
@@ -23,7 +20,6 @@ export const getterBlogFromDB = async (slug: string, type: BlogTypes) => {
     }
     return blogsListItem
 }
-
 
 export const setBlogInDB = async ( entity:string , blog: DataBlog, blogId: string, type: BlogTypes) => {
 
@@ -46,7 +42,6 @@ export const deleteBlogInDB = async ( entity: string, id: string, type: BlogType
         Swal.fire('Error Al Eliminar Blog', 'No pudo eliminarse el blog', 'error')   
     }
 }
-
 
 export const updateBlogsInDB = async ( entity: string, blog: DataBlog, id:string, type: BlogTypes ) => {
 

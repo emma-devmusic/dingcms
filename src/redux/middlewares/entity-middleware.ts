@@ -22,7 +22,6 @@ export const entityMiddleware = (state: MiddlewareAPI) => {
             state.dispatch(setIsLoading(false))
         }
 
-
         if (action.type === 'entity/setSelectedEntity') {
             const rootState = state.getState() as RootState
             state.dispatch(getBlogs(rootState.entity.entitySelected.slug))
