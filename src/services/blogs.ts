@@ -1,12 +1,12 @@
 
-import { doc, getFirestore, collection, getDocs, setDoc, deleteDoc, updateDoc  } from "firebase/firestore";
-import { app } from "./firebase";
+import { doc, collection, getDocs, setDoc, deleteDoc, updateDoc  } from "firebase/firestore";
+import { db } from "./firebase";
 import Swal from "sweetalert2";
 import { Blog, BlogTypes, DataBlog } from "../types/store";
 import { addKeywordsOnBlog } from "../helpers/functions";
 
 
-export const db = getFirestore(app);
+// export const db = getFirestore(app);
 
 export const getterBlogFromDB = async (slug: string, type: BlogTypes) => {
 

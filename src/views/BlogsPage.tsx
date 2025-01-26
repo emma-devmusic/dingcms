@@ -8,7 +8,8 @@ import { SpinnerBox } from "../components/spinner/SpinnerBox";
 import { Blog } from "../types/store";
 import { collection, limit, orderBy, query, onSnapshot, startAfter } from "firebase/firestore";
 import Swal from "sweetalert2";
-import { db } from "../services/blogs";
+import { db } from "../services/firebase";
+import { Search } from "../components/search/Search";
 
 export const BlogsPage = () => {
 
@@ -18,14 +19,13 @@ export const BlogsPage = () => {
     const { blogType } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
 
-    const [searchValue, setSearchValue] = useState('')
     const [blogs, setBlogs] = useState<Blog[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [firstDocument, setFirstDocument] = useState<any>(null)
     const [lastDocument, setLastDocument] = useState<any>(null)
     const [pageState, setPageState] = useState(1)
     const [blogsNumber] = useState(10)
-
+    const [categorySelected, setCategorySelected] = useState('')
 
     useEffect(() => {
         const entityInLS = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
@@ -38,12 +38,6 @@ export const BlogsPage = () => {
         dispatch(resetActiveBlog())
         navigate(`/pages/entity-selected/blog-settings`)
     }
-
-    const handleSearchBlogs = (e:any) => {
-        e.preventDefault();
-        console.log(e.target)
-    }
-
 
     useEffect(() => {
         setIsLoading(true)
@@ -143,24 +137,23 @@ export const BlogsPage = () => {
                 <h4>Admistra los Blogs</h4>
                 <p>Busca, crea, edita o elimina los blogs cuanto necesites.</p>
             </div>
-            <div className="d-flex flex-column flex-sm-row justify-content-sm-between gap-2 align-items-center mb-4">
-                <form className="w-100 d-flex gap-1" style={{ maxWidth: '500px' }} onSubmit={handleSearchBlogs}>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Buscar..." 
-                        aria-label="default input example" 
-                        value={searchValue}
-                        name="query"
-                        onChange={e => setSearchValue(e.target.value)}
-                    />
-                    <button className="btn btn-primary" type="submit">Buscar</button>
-                </form>
-                <div className="w-100 d-flex justify-content-sm-end">
+            <div>
+                <Search
+                    blogsNumber={10}
+                    categorySelected={categorySelected}
+                    setBlogs={setBlogs}
+                    setCategorySelected={setCategorySelected}
+                    setFirstDocument={setFirstDocument}
+                    setIsLoading={setIsLoading}
+                    setLastDocument={setLastDocument}
+                />
+            </div>
+            <div className="d-flex flex-column flex-sm-row justify-content-sm-between gap-2 align-items-center mb-4 mt-4">
+                <div className="w-100 d-flex justify-content-sm-start">
                     <button
                         onClick={handleNewBlog}
                         className="btn btn-primary w-100"
-                        style={{maxWidth: '200px'}}
+                        style={{ maxWidth: '200px' }}
                     >
                         Nuevo Blog
                     </button>

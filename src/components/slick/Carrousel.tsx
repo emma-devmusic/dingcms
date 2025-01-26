@@ -8,13 +8,14 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 const settings = {
-    dots: true,
+    dots: false,
     infinite: false,
     arrow: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     speed: 200,
-    draggable: false
+    draggable: false,
+    accessibility: false
 };
 
 

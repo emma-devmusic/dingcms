@@ -16,7 +16,7 @@ export const getterCategoriesFromDB = async (slug: string) => {
             })
         }
     } catch (error) {
-        Swal.fire('Sin Blogs', 'No hay blogs en esta página', 'warning')
+        Swal.fire('Sin Categorías', 'No hay blogs en esta página', 'warning')
         console.log(error)
     }
     return categoriesList
