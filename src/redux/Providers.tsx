@@ -8,9 +8,9 @@ import { logout, setAuth } from "./slice/authSlice";
 import { isExpired } from "../helpers/functions";
 import Swal from "sweetalert2";
 import { getUserData } from "./slice/userSlice";
+import { Entity } from "../types/store";
 
 export const Providers = ({ children }: { children: ReactNode }) => {
-
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -22,13 +22,15 @@ export const Providers = ({ children }: { children: ReactNode }) => {
                         })
                     }
                 });
-                store.dispatch( getUserData(user.email ?? '') )
-                store.dispatch(
-                    setAuth({
-                        uid: user.uid,
-                        email: user.email,
-                        name: user.displayName
-                    }))
+                if(!store.getState().user.user.email){
+                    store.dispatch( getUserData(user.email ?? '') )
+                    store.dispatch(
+                        setAuth({
+                            uid: user.uid,
+                            email: user.email,
+                            name: user.displayName
+                        }))
+                }
             } else {
                 store.dispatch(logout())
             }
@@ -36,8 +38,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     }, [])
 
     useEffect(() => {
-        const entitySelected = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
-        if (entitySelected.slug) store.dispatch(setSelectedEntity(entitySelected))
+        const entityInLS: Entity = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
+        if (entityInLS.slug) store.dispatch(setSelectedEntity(entityInLS))
     }, [])
 
     return (

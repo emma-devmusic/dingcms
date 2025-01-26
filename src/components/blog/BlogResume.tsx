@@ -13,10 +13,10 @@ interface Props {
 
 export const BlogResume = ({ previous }: Props) => {
 
-    const { blogActive, isUpdating,  blogType } = useAppSelector(state => state.blogs)
+    const dispatch = useAppDispatch()
+    const { blogActive, isUpdating, blogType } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
     const { isLoading } = useAppSelector(state => state.ui)
-    const dispatch = useAppDispatch()
 
     const handlePrevious = () => {
         previous()
@@ -35,23 +35,34 @@ export const BlogResume = ({ previous }: Props) => {
         } else {
             dispatch(newBlog(arg as NewBlog))
         }
-
-
     }
-    if (isLoading)
+
+    if (isLoading) {
         return <div className="d-flex justify-content-center align-items-center" style={{
             height: '400px'
         }}>
             <div className="spinner-border" role="status"></div>
         </div>
+    }
 
     return (
-        <div className="container">
-            <div className=" card p-4">
+        <div className="container mt-3">
+            <div className="d-flex align-items-center justify-content-between">
                 <div className="card-title">
-                    <h5>Resumen del Blog</h5>
+                    <h2>Resumen del Blog</h2>
                 </div>
-                <hr />
+                <div className="d-flex gap-2">
+                    <button className="btn btn-outline-primary" onClick={handlePrevious}>Atrás</button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={handlePublish}
+                    >
+                        Publicar
+                    </button>
+                </div>
+            </div>
+            <hr />
+            <div className="card p-4">
                 <div className="card-body">
                     <p><strong>Titulo:</strong> <span>{blogActive.data.title}</span></p>
                     <p><strong>Editor:</strong> <span>{blogActive.data.creator}</span></p>
@@ -63,15 +74,6 @@ export const BlogResume = ({ previous }: Props) => {
                         maxHeight: '200px',
                         overflow: 'scroll'
                     }}><strong>html:</strong> <span>{blogActive.data.html}</span></p>
-                </div>
-                <div className="d-flex gap-2">
-                    <button className="btn btn-outline-primary" onClick={handlePrevious}>Atrás</button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={handlePublish}
-                    >
-                        Publicar
-                    </button>
                 </div>
             </div>
         </div>

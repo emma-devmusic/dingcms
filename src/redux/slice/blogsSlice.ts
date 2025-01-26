@@ -37,6 +37,9 @@ export const blogsSlice = createSlice({
         setBlogs(state, action: PayloadAction<Blog[]>) {
             state.blogs = action.payload
         },
+        setIndividuallyBlogs(state, action: PayloadAction<Blog>) {
+            state.blogs = [...state.blogs, action.payload]
+        },
         setBlog(state, action: PayloadAction) {
             console.log(state, action)
         },
@@ -70,6 +73,7 @@ export const blogsSlice = createSlice({
 export const {
     getBlog,
     getBlogs,
+    setIndividuallyBlogs,
     setBlog,
     setBlogs,
     setBlogType,

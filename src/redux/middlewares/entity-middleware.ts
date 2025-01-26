@@ -1,10 +1,9 @@
+import Swal from "sweetalert2";
 import { Dispatch, MiddlewareAPI, PayloadAction } from "@reduxjs/toolkit";
 import { setIsLoading } from "../slice/uiSlice";
 import { getterEntities } from "../../services/entity";
 import { setEntities } from "../slice/entitySlice";
-import Swal from "sweetalert2";
-import { getBlogs } from "../slice/blogsSlice";
-import { RootState } from "../store";
+import { setBlogType } from "../slice/blogsSlice";
 
 export const entityMiddleware = (state: MiddlewareAPI) => {
     return (next: Dispatch) => async (action: PayloadAction<any>) => {
@@ -23,8 +22,7 @@ export const entityMiddleware = (state: MiddlewareAPI) => {
         }
 
         if (action.type === 'entity/setSelectedEntity') {
-            const rootState = state.getState() as RootState
-            state.dispatch(getBlogs(rootState.entity.entitySelected.slug))
+            state.dispatch(setBlogType('blogs'));
             localStorage.setItem('entity-selected', JSON.stringify(action.payload))
         }
     }

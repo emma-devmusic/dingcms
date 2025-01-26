@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { useDropzone } from 'react-dropzone'
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -17,6 +17,7 @@ interface Props {
 export const BlogDetails = ({ next }: Props) => {
 
     const dispatch = useAppDispatch()
+    const formRef = useRef<HTMLFormElement>(null);
     const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
     const [categories, setCategories] = useState<Category[]>([]);
@@ -36,15 +37,14 @@ export const BlogDetails = ({ next }: Props) => {
     }, [blogActive])
 
     useEffect(() => {
-        if(entitySelected.slug !== '')
-        getterCategoriesFromDB(entitySelected.slug)
-            .then(resp => setCategories(resp))
-            .catch(err => console.error(err))
+        if (entitySelected.slug !== '')
+            getterCategoriesFromDB(entitySelected.slug)
+                .then(resp => setCategories(resp))
+                .catch(err => console.error(err))
     }, [entitySelected])
 
-
     const onDrop = useCallback((acceptedFiles: any) => {
-        if(acceptedFiles[0].size > 2000000) {
+        if (acceptedFiles[0].size > 2000000) {
             Swal.fire('Tamaño de archivo excesivo!', 'El archivo debe pesar menos de 2MB', 'warning')
             return
         }
@@ -66,7 +66,7 @@ export const BlogDetails = ({ next }: Props) => {
         }
         console.log(dataBlog.date)
         if (imageBlog) {
-            dispatch(setActiveBlog({ blog:{ id: toSlug(values.title), data: dataBlog }, isUpdating }))
+            dispatch(setActiveBlog({ blog: { id: toSlug(values.title), data: dataBlog }, isUpdating }))
             next()
         } else {
             Swal.fire('¡Falta la portada!', 'Selecciona una imagen de portada para el blog', 'warning')
@@ -75,13 +75,28 @@ export const BlogDetails = ({ next }: Props) => {
 
 
     return (
-        <div className="mt-3 px-2">
+        <div className="container mt-3">
             <div className="d-flex justify-content-between align-items-center">
-                <h2>Detalles del Blog</h2>
-                <button className="btn btn-primary" onClick={() => dispatch(resetActiveBlog())}>Limpiar</button>
+                <div className="d-flex align-items-center">
+                    <h2>Detalles del Blog</h2>
+                    <button className="btn text-primary" onClick={() => dispatch(resetActiveBlog())}>Limpiar</button>
+                </div>
+                <div>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        onClick={() => {
+                            if (formRef.current) {
+                                formRef.current.requestSubmit();
+                            }
+                        }}
+                    >
+                        Siguiente
+                    </button>
+                </div>
             </div>
             <hr />
-            <form className="d-flex flex-column" onSubmit={handleNext} style={{
+            <form ref={formRef} className="d-flex flex-column" onSubmit={handleNext} style={{
                 maxWidth: '600px',
                 margin: '0 auto',
             }} >
@@ -127,23 +142,27 @@ export const BlogDetails = ({ next }: Props) => {
                     <textarea
                         value={values.description}
                         onChange={handleInputChange}
-                        className="form-control" placeholder="Descripción del blog..." name='description' id="floatingTextarea" required></textarea>
+                        className="form-control"
+                        placeholder="Descripción del blog..."
+                        name='description'
+                        id="floatingTextarea"
+                        required
+                    ></textarea>
                     <label htmlFor="floatingTextarea">Breve descripción del blog...</label>
                 </div>
 
                 <div className="form-floating">
                     <span className="form-label mb-2 d-block" >Imagen de portada</span>
-                    <div className="image-banner-blog rounded border p-3 mb-3">
-                        {
-                            imageBlog 
-                            ? <img src={imageBlog as string} style={{
+                    {
+                        imageBlog
+                        && <div className="image-banner-blog rounded border p-3 mb-3">
+                            <img src={imageBlog as string} style={{
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'cover',
                             }} />
-                            : <p className="text-center m-0">Sube una imagen de portada</p>
-                        }
-                    </div>
+                        </div>
+                    }
                     <div
                         {...getRootProps()}
                         className="border rounded p-2 mb-3 react-dropzone"
@@ -155,17 +174,6 @@ export const BlogDetails = ({ next }: Props) => {
                                 <p className="m-0 text-center">Haz click aquí o arrastra una imagen</p>
                         }
                     </div>
-                </div>
-
-
-
-                <div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                    >
-                        Siguiente
-                    </button>
                 </div>
             </form>
         </div>

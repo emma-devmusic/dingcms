@@ -8,7 +8,7 @@ import { db } from "./firebase";
 export const getterBlogFromDB = async (slug: string, type: BlogTypes) => {
 
     let blogsListItem: Blog[] = []
-
+    
     const blogsEntity = collection(db, "entity", `${slug}`, `${type}`);
     const docSnap = await getDocs(blogsEntity);
     if (docSnap) {

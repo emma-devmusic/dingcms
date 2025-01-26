@@ -31,7 +31,6 @@ export interface DataBlog {
     date: string
 }
 
-
 export interface BlogsState {
     blogs: Blog[];
     blogsSelected: Blog[];

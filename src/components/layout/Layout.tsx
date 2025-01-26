@@ -17,7 +17,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <div>
             <Navbar />
-            {children}
+            <div className="overflow-auto">
+                {children}
+            </div>
         </div>
     );
 };

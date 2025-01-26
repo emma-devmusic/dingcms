@@ -3,6 +3,7 @@ import { setIsLoading } from "../slice/uiSlice";
 import { getUserDataFromDB } from "../../services/user";
 import { setUser } from "../slice/userSlice";
 import Swal from "sweetalert2";
+
 export const userMiddleware = (state: MiddlewareAPI) => {
     return (next: Dispatch) => async (action: PayloadAction<any>) => {
 

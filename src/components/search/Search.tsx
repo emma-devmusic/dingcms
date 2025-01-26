@@ -29,37 +29,40 @@ export const Search = ({ setBlogs, blogsNumber, setFirstDocument, setLastDocumen
     })
 
     useEffect(() => {
-        if (categories.length === 0) {
+        if (categories.length === 0 && entitySelected.slug) {
             setLoadingCategories(true)
-            getterCategoriesFromDB('concejo-charata')
+            getterCategoriesFromDB(entitySelected.slug)
                 .then(data => setCategories(data))
                 .finally(() => setLoadingCategories(false))
         }
-    }, [])
+    }, [entitySelected])
 
     useEffect(() => {
-        if (categorySelected !== '') {
-            setInputValue({ keyword: '' })
-            const blogs = collection(db, "entity", `${entitySelected.slug}`, `${blogType}`);
-            let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'), where('category', '==', categorySelected))
-            try {
-                onSnapshot(q, (querySnapshot) => {
-                    setFirstDocument(querySnapshot.docs[0])
-                    setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1])
-                    setBlogs([])
-                    querySnapshot.forEach((doc) => {
-                        setBlogs((state: any) => [...state, { id: doc.id, data: doc.data() }])
+        if (entitySelected.slug) {
+            if (categorySelected !== '') {
+                setIsLoading(true)
+                setInputValue({ keyword: '' })
+                const blogs = collection(db, "entity", `${entitySelected.slug}`, `${blogType}`);
+                let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'), where('category', '==', categorySelected))
+                try {
+                    onSnapshot(q, (querySnapshot) => {
+                        setFirstDocument(querySnapshot.docs[0])
+                        setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1])
+                        setBlogs([])
+                        querySnapshot.forEach((doc) => {
+                            setBlogs((state: any) => [...state, { id: doc.id, data: doc.data() }])
+                        })
                         setIsLoading(false)
                     })
-                })
-            } catch (error) {
-                setIsLoading(false)
-                Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
+                } catch (error) {
+                    setIsLoading(false)
+                    Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
+                }
+            } else {
+                handleResetSearch()
             }
-        } else {
-            handleResetSearch()
         }
-    }, [categorySelected])
+    }, [categorySelected, entitySelected, blogType])
 
     const handleSearch = async (e: any) => {
         e.preventDefault();
@@ -83,6 +86,7 @@ export const Search = ({ setBlogs, blogsNumber, setFirstDocument, setLastDocumen
 
     const handleResetSearch = () => {
         setInputValue({ keyword: '' })
+        setIsLoading(true);
         const blogs = collection(db, "entity", `${entitySelected.slug}`, `${blogType}`);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'))
         try {
@@ -92,8 +96,8 @@ export const Search = ({ setBlogs, blogsNumber, setFirstDocument, setLastDocumen
                 setBlogs([])
                 querySnapshot.forEach((doc) => {
                     setBlogs((state: any) => [...state, { id: doc.id, data: doc.data() }])
-                    setIsLoading(false)
                 })
+                setIsLoading(false)
             })
         } catch (error) {
             setIsLoading(false)
@@ -102,24 +106,27 @@ export const Search = ({ setBlogs, blogsNumber, setFirstDocument, setLastDocumen
     }
 
     return (
-        <div className="d-md-flex align-items-center justify-content-start gap-2">
-            <form className="input-group" style={{ maxWidth: '600px' }} onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    className="form-control p-3"
-                    placeholder="Buscar"
-                    name="keyword"
-                    value={inputValue.keyword}
-                    onChange={(e) => setInputValue({ ...inputValue, keyword: e.target.value })}
-                />
+        <div className="d-flex flex-column align-items-start justify-content-start gap-2" style={{ maxWidth: '500px' }}>
+            <form className="input-group w-100 d-flex"  onSubmit={handleSearch}>
+                <div className="d-flex position-relative w-75">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Buscar"
+                        name="keyword"
+                        value={inputValue.keyword}
+                        onChange={(e) => setInputValue({ ...inputValue, keyword: e.target.value })}
+                        style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}
+                    />
+                    <button className="btn px-3 fs-4 position-absolute end-0 d-flex align-items-center h-100" onClick={handleResetSearch}><Icon icon={'hugeicons:reload'} /></button>
+                </div>
                 <button className="btn btn-primary px-4 fs-4" type="submit"><Icon icon={'material-symbols:search'} /></button>
-                <button className="btn btn-outline-primary px-4 fs-4" onClick={handleResetSearch} style={{}}><Icon icon={'hugeicons:reload'} /></button>
             </form>
             {
                 blogType !== 'sesiones' &&
                 <div className="input-group w-75 w-sm-auto mt-2 m-md-0" style={{ maxWidth: '600px' }}>
                     <select
-                        className="form-select p-3"
+                        className="form-select"
                         name="categories"
                         onChange={(e: any) => setCategorySelected(e.target.value)}
                     >

@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { BlogItem } from "../components/blog/BlogItem";
 import { LayoutViews } from "../components/layout/LayoutViews";
@@ -5,9 +6,8 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 import { getBlogs, resetActiveBlog, setBlogType } from "../redux/slice/blogsSlice";
 import { useNavigate } from "react-router-dom";
 import { SpinnerBox } from "../components/spinner/SpinnerBox";
-import { Blog } from "../types/store";
+import { Blog, Entity } from "../types/store";
 import { collection, limit, orderBy, query, onSnapshot, startAfter } from "firebase/firestore";
-import Swal from "sweetalert2";
 import { db } from "../services/firebase";
 import { Search } from "../components/search/Search";
 
@@ -24,13 +24,13 @@ export const BlogsPage = () => {
     const [firstDocument, setFirstDocument] = useState<any>(null)
     const [lastDocument, setLastDocument] = useState<any>(null)
     const [pageState, setPageState] = useState(1)
-    const [blogsNumber] = useState(10)
+    const [blogsNumber] = useState(5)
     const [categorySelected, setCategorySelected] = useState('')
 
     useEffect(() => {
-        const entityInLS = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
-        if (entitySelected.slug !== entityInLS.slug && entitySelected.slug !== '') {
-            dispatch(getBlogs(entitySelected.slug))
+        const entityInLS: Entity = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
+        if (!entitySelected.slug) {
+            dispatch(getBlogs(entityInLS.slug))
         }
     }, [])
 
@@ -39,29 +39,8 @@ export const BlogsPage = () => {
         navigate(`/pages/entity-selected/blog-settings`)
     }
 
-    useEffect(() => {
-        setIsLoading(true)
-        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
-        let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'))
-        try {
-            onSnapshot(q, (querySnapshot) => {
-                setFirstDocument(querySnapshot.docs[0])
-                setLastDocument(querySnapshot.docs[querySnapshot.docs.length - 1])
-                setBlogs([])
-                querySnapshot.forEach((doc) => {
-                    setBlogs((state: any) => [...state, { id: doc.id, data: doc.data() }])
-                    setIsLoading(false)
-                })
-            })
-        } catch (error) {
-            setIsLoading(false)
-            Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
-        }
-    }, [blogType])
-
-
-
     const handleNextPage = () => {
+        setIsLoading(true)
         const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'), startAfter(lastDocument))
         try {
@@ -87,8 +66,8 @@ export const BlogsPage = () => {
         }
     }
 
-
     const handlePrevPage = () => {
+        setIsLoading(true)
         const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'asc'), startAfter(firstDocument))
         try {
@@ -139,7 +118,7 @@ export const BlogsPage = () => {
             </div>
             <div>
                 <Search
-                    blogsNumber={10}
+                    blogsNumber={blogsNumber}
                     categorySelected={categorySelected}
                     setBlogs={setBlogs}
                     setCategorySelected={setCategorySelected}
@@ -160,28 +139,26 @@ export const BlogsPage = () => {
                 </div>
             </div>
             <div className="table-responsive">
-                <table className="table border table-striped rounded table-hover" style={{
-                    minWidth: '761px'
-                }}>
-                    <thead className="">
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Titulo</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            !isLoading && blogs.map(blog => <BlogItem blog={blog} key={blog.id} />)
-                        }
-                    </tbody>
-                </table>
-                {isLoading && <SpinnerBox />}
+                {
+                    isLoading
+                        ? <SpinnerBox />
+                        : <table className="table border table-striped rounded table-hover" style={{ minWidth: '761px' }}>
+                            <thead className="">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Titulo</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    blogs.map(blog => <BlogItem blog={blog} key={blog.id} />)
+                                }
+                            </tbody>
+                        </table>
+                }
             </div>
-
-
-
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
                     <li className="page-item" onClick={handlePrevPage}>
@@ -197,10 +174,6 @@ export const BlogsPage = () => {
                     </li>
                 </ul>
             </nav>
-
-
-
         </LayoutViews>
-
     );
 };
