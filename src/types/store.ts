@@ -36,14 +36,17 @@ export interface BlogsState {
     blogs: Blog[];
     blogsSelected: Blog[];
     blogActive: Blog;
+    blogType: BlogTypes;
     isUpdating: boolean;
 }
 
+export type BlogTypes = 'blogs' | 'sesiones'
 
 export interface NewBlog {
     id: string;
-    entity: string;
     blog: DataBlog
+    blogType: BlogTypes;
+    entity: string;
 }
 
 export interface Category {

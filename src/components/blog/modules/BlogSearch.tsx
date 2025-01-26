@@ -17,10 +17,9 @@ export const BlogSearch = () => {
 
     const dispatch = useAppDispatch()
     // const navigate = useNavigate()
-    // const { blogs } = useAppSelector(state => state.blogs)
+    const { blogType } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
     // const { isLoading } = useAppSelector(state => state.ui)
-
 
     const [blogs, setBlogs] = useState<Blog[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -29,7 +28,6 @@ export const BlogSearch = () => {
     const [pageState, setPageState] = useState(1)
     const [blogsNumber] = useState(10)
 
-
     useEffect(() => {
         const entityInLS = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
         if (entitySelected.slug !== entityInLS.slug && entitySelected.slug !== '') {
@@ -37,12 +35,13 @@ export const BlogSearch = () => {
         }
     }, [])
 
-
-
+    useEffect(() => {
+        setPageState(1)
+    },[blogType])
 
     useEffect(() => {
         setIsLoading(true)
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'))
         try {
             onSnapshot(q, (querySnapshot) => {
@@ -60,10 +59,8 @@ export const BlogSearch = () => {
         }
     }, [])
 
-
-
     const handleNextPage = () => {
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'), startAfter(lastDocument))
         try {
             onSnapshot(q, (querySnapshot) => {
@@ -81,7 +78,6 @@ export const BlogSearch = () => {
                     setIsLoading(false)
                 }
             })
-
         } catch (error) {
             setIsLoading(false)
             Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
@@ -90,7 +86,7 @@ export const BlogSearch = () => {
 
 
     const handlePrevPage = () => {
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'asc'), startAfter(firstDocument))
         try {
             onSnapshot(q, (snapshot) => {
@@ -113,11 +109,6 @@ export const BlogSearch = () => {
             Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
         }
     }
-
-
-
-
-
 
     return (
         <div>

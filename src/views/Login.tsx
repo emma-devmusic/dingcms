@@ -23,8 +23,8 @@ export const Login = () => {
     }, [])
 
     const [values, handleInputChange] = useForm({
-        email: '',
-        password: ''
+        email: 'ema.araujo.ea@gmail.com',
+        password: '35300409'
     })
 
 

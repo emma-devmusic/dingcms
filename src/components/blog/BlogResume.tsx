@@ -13,7 +13,7 @@ interface Props {
 
 export const BlogResume = ({ previous }: Props) => {
 
-    const { blogActive, isUpdating } = useAppSelector(state => state.blogs)
+    const { blogActive, isUpdating,  blogType } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
     const { isLoading } = useAppSelector(state => state.ui)
     const dispatch = useAppDispatch()
@@ -26,7 +26,8 @@ export const BlogResume = ({ previous }: Props) => {
         const arg = {
             entity: entitySelected.slug,
             blog: blogActive.data,
-            id: blogActive.id
+            id: blogActive.id,
+            blogType
         }
         dispatch(setIsLoading(true))
         if (isUpdating) {

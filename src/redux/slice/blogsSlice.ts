@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Blog, BlogsState, NewBlog } from '../../types/store';
+import { Blog, BlogsState, BlogTypes, NewBlog } from '../../types/store';
 
 
 const initialState: BlogsState = {
@@ -17,8 +17,9 @@ const initialState: BlogsState = {
             issue: '',
             title: '',
             id: ''
-        }
+        },
     } as Blog,
+    blogType: 'blogs',
     isUpdating: false,
 }
 
@@ -38,6 +39,9 @@ export const blogsSlice = createSlice({
         },
         setBlog(state, action: PayloadAction) {
             console.log(state, action)
+        },
+        setBlogType(state, action: PayloadAction<BlogTypes>) {
+            state.blogType = action.payload
         },
         setActiveBlog(state, action: PayloadAction<{blog: Blog; isUpdating: boolean}>) {
             state.blogActive = action.payload.blog
@@ -68,6 +72,7 @@ export const {
     getBlogs,
     setBlog,
     setBlogs,
+    setBlogType,
     setActiveBlog,
     newBlog,
     deleteBlog,

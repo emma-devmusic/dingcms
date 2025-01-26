@@ -3,8 +3,16 @@ import { DataBlog } from "../types/store";
 export const isExpired = (dateChecking: Date | string): boolean => {
     const dateNow = new Date();
     const dateCheck = new Date(dateChecking);
-    return dateNow > dateCheck;
-}
+    const dif:number = dateNow.getTime() - dateCheck.getTime()
+    // Validar si la fecha convertida es válida
+    
+    if (isNaN(dateCheck.getTime())) {
+        console.error(`Invalid date provided: ${dateChecking}`);
+        return false; // O lanza un error si prefieres
+    }
+
+    return dif > 0 ;
+};
 
 
 export const toSlug = (text: string): string => {

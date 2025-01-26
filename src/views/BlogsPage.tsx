@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BlogItem } from "../components/blog/BlogItem";
 import { LayoutViews } from "../components/layout/LayoutViews";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import { getBlogs, resetActiveBlog } from "../redux/slice/blogsSlice";
+import { getBlogs, resetActiveBlog, setBlogType } from "../redux/slice/blogsSlice";
 import { useNavigate } from "react-router-dom";
 import { SpinnerBox } from "../components/spinner/SpinnerBox";
 import { Blog } from "../types/store";
@@ -14,11 +14,11 @@ export const BlogsPage = () => {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    // const { blogs } = useAppSelector(state => state.blogs)
+
+    const { blogType } = useAppSelector(state => state.blogs)
     const { entitySelected } = useAppSelector(state => state.entity)
-    // const { isLoading } = useAppSelector(state => state.ui)
 
-
+    const [searchValue, setSearchValue] = useState('')
     const [blogs, setBlogs] = useState<Blog[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [firstDocument, setFirstDocument] = useState<any>(null)
@@ -39,15 +39,15 @@ export const BlogsPage = () => {
         navigate(`/pages/entity-selected/blog-settings`)
     }
 
-
-
-
-
+    const handleSearchBlogs = (e:any) => {
+        e.preventDefault();
+        console.log(e.target)
+    }
 
 
     useEffect(() => {
         setIsLoading(true)
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'))
         try {
             onSnapshot(q, (querySnapshot) => {
@@ -63,12 +63,12 @@ export const BlogsPage = () => {
             setIsLoading(false)
             Swal.fire('Error', 'Hubo un error en la base de datos', 'error');
         }
-    }, [])
+    }, [blogType])
 
 
 
     const handleNextPage = () => {
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'desc'), startAfter(lastDocument))
         try {
             onSnapshot(q, (querySnapshot) => {
@@ -95,7 +95,7 @@ export const BlogsPage = () => {
 
 
     const handlePrevPage = () => {
-        const blogs = collection(db, "entity", `concejo-charata`, "blogs");
+        const blogs = collection(db, "entity", `${entitySelected.slug}`, blogType);
         let q = query(blogs, limit(blogsNumber), orderBy('date', 'asc'), startAfter(firstDocument))
         try {
             onSnapshot(q, (snapshot) => {
@@ -119,32 +119,48 @@ export const BlogsPage = () => {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return (
         <LayoutViews pageTitle={`Blogs - ${entitySelected.name}`} >
-            <div className="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Admistra los Blogs</h5>
-                    <p>Crea, edita o elimina los blogs cuanto necesites.</p>
+            {
+                entitySelected.slug === 'concejo-charata' &&
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                        <button
+                            type="button"
+                            className={`btn ${blogType === 'blogs' ? ' btn-primary' : 'btn-outline-primary'}`}
+                            onClick={() => dispatch(setBlogType('blogs'))}
+                        >Blogs</button>
+                        <button
+                            type="button"
+                            className={`btn ${blogType === 'sesiones' ? 'btn-primary' : 'btn-outline-primary'}`}
+                            onClick={() => dispatch(setBlogType('sesiones'))}
+                        >Sesiones</button>
+                    </div>
                 </div>
-                <div>
+            }
+
+            <div>
+                <h4>Admistra los Blogs</h4>
+                <p>Busca, crea, edita o elimina los blogs cuanto necesites.</p>
+            </div>
+            <div className="d-flex flex-column flex-sm-row justify-content-sm-between gap-2 align-items-center mb-4">
+                <form className="w-100 d-flex gap-1" style={{ maxWidth: '500px' }} onSubmit={handleSearchBlogs}>
+                    <input 
+                        className="form-control" 
+                        type="text" 
+                        placeholder="Buscar..." 
+                        aria-label="default input example" 
+                        value={searchValue}
+                        name="query"
+                        onChange={e => setSearchValue(e.target.value)}
+                    />
+                    <button className="btn btn-primary" type="submit">Buscar</button>
+                </form>
+                <div className="w-100 d-flex justify-content-sm-end">
                     <button
                         onClick={handleNewBlog}
-                        className="btn btn-primary"
+                        className="btn btn-primary w-100"
+                        style={{maxWidth: '200px'}}
                     >
                         Nuevo Blog
                     </button>

@@ -6,7 +6,6 @@ import { BlogsEdit } from "./views/BlogsEdit";
 import { Profile } from "./views/Profile";
 import { BlogsPage } from "./views/BlogsPage";
 import { Welcome } from "./views/Welcome";
-import { SessionSearch } from "./components/blog/modules/SessionSearch";
 import { BlogSearch } from "./components/blog/modules/BlogSearch";
 
 export const router = createBrowserRouter([
@@ -30,10 +29,6 @@ export const router = createBrowserRouter([
                 path: '/pages/entity-selected/blogs',
                 element: <BlogsPage />,
                 children: [
-                    {
-                        path: 'sessions',
-                        element: <SessionSearch />
-                    },
                     {
                         path: 'blogs',
                         element: <BlogSearch />
