@@ -28,6 +28,10 @@ export const BlogsPage = () => {
     const [categorySelected, setCategorySelected] = useState('')
 
     useEffect(() => {
+        setPageState(1)
+    },[blogType])
+
+    useEffect(() => {
         const entityInLS: Entity = JSON.parse(localStorage.getItem('entity-selected') ?? '{}')
         if (!entitySelected.slug) {
             dispatch(getBlogs(entityInLS.slug))
